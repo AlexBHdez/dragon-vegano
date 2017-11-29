@@ -1,0 +1,10 @@
+body {
+  background-color: rgba(128, 128, 128, 0.356);
+}
+
+#gameArea {
+  background-color: white;
+  border: 1px solid grey;
+  margin: 50px auto;
+  display: block;
+}
