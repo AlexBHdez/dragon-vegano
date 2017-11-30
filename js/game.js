@@ -7,22 +7,34 @@ var gameArea = {
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     $('canvas').attr('id', 'gameArea');
+
     dragon.flyControls();
+    
     this.interval = setInterval(updateGameArea, 20);
   },
   clear: function () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  },
+  stop: function () {
+    clearInterval(this.interval);
   },  
 };
 
-// Dibuja el jugador
+// Dibuja el jugador y la trampa
 var dragon = new Character(30, 30, 'red', 100, 500);
+var trampa = new Obstacles(100, 30, 'green', 30, 200);
 
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del gameArea.
 function updateGameArea () {
   gameArea.clear();
+
   dragon.newPos();
   dragon.update();
-  dragon.limits();  
-}
+  dragon.limits();
 
+  trampa.update();
+
+  if (dragon.crashWith(trampa)) {
+    gameArea.stop();
+  }
+}
