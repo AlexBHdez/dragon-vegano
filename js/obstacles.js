@@ -14,9 +14,9 @@ Obstacles.prototype.update = function () {
   ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
-// Añadimos la gravedad a la posición del personaje -> updateGameArea
+// Movimiento de la trampa -> updateGameArea
 Obstacles.prototype.newPos = function () {
-  
+  this.x -= 4;
 };
 
 // Definimos colisiones entre los componentes
