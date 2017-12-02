@@ -1,6 +1,8 @@
 
 var dragon;
 var trampaArray = [];
+var pollosArray = [];
+var brocoliArray = [];
 
 // Función para empezar el juego e insertar el personaje
 function startGame () {
@@ -10,6 +12,7 @@ function startGame () {
 
 // Define el área de juego y la inserta en el body.
 var gameArea = {
+  counterBrocolis: 0,
   canvas: document.createElement('canvas'),
   start: function () {
     this.canvas.width = 1000;
@@ -20,6 +23,7 @@ var gameArea = {
 
     this.frameNo = 0;
     dragon.flyControls();
+    this.counterBrocolis = 0;
     
     this.interval = setInterval(updateGameArea, 20);
   },
@@ -36,25 +40,65 @@ var gameArea = {
     return false;
   },
   proveCrash : function () {
-    var yPosition;
     for (i = 0; i < trampaArray.length; i += 1) {
       if (dragon.crashWith(trampaArray[i])) {
-        myGameArea.stop();
+        gameArea.stop();
       } 
     }
+    for (i = 0; i < pollosArray.length; i += 1) {
+      if (dragon.crashWith(pollosArray[i])) {
+        gameArea.stop();
+      }
+    }
+    // for (i = 0; i < brocoliArray.length; i += 1) {
+    //   if (dragon.crashWith(brocoliArray[i])) {
+    //     brocoliArray.splice(brocoliArray[i], 1);
+    //     gameArea.counterBrocolis++;
+    //     console.log(gameArea.counterBrocolis);
+    //   }
+    // }
+    brocoliArray.forEach(function (brocoli, index){
+      console.log("counterBrocolis: ", this.counterBrocolis)
+      if (dragon.crashWith(brocoli)) {
+        
+        brocoliArray.splice(index, 1);
+        
+        console.log("hit", brocoliArray)
+        this.counterBrocolis += 1;
+        // console.log(gameArea.counterBrocolis);
+      }
+    });
   },
-  trampaGenerate: function () {
+  trampasGenerate: function () {
+    var yPosition;
     if (gameArea.frameNo == 1 || gameArea.frameInterval(150)) {
       yPosition = Math.floor(Math.random() * 500) - dragon.height;
-      trampaArray.push(new Obstacles(200, 20, "green", 1000, yPosition));
+      trampaArray.push(new Obstacles(200, 20, "black", 1000, yPosition));
+    }
+    if (gameArea.frameNo == 1 || gameArea.frameInterval(200)) {
+      yPosition = gameArea.canvas.height - 20;
+      trampaArray.push(new Obstacles(100, 20, "yellow", 1000, yPosition));
+    }
+    if (gameArea.frameNo == 1 || gameArea.frameInterval(50)) {
+      yPosition = Math.floor(Math.random() * 500) - dragon.height;
+      brocoliArray.push(new Brocoli(20, 20, "green", 1000, yPosition));
     }
   },
-  trampaMove: function () {
+  trampasMove: function () {
     for (i = 0; i < trampaArray.length; i += 1) {
       trampaArray[i].x += -4;
       trampaArray[i].update();
     }
+    for (i = 0; i < pollosArray.length; i += 1) {
+      pollosArray[i].x += -2;
+      pollosArray[i].update();
+    }
+    for (i = 0; i < brocoliArray.length; i += 1) {
+      brocoliArray[i].x += -4;
+      brocoliArray[i].update();
+    }
   },
+
 };
 
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del gameArea.
@@ -65,9 +109,9 @@ function updateGameArea () {
   gameArea.clear();
   gameArea.frameNo += 1;
   // Por cada n frames, añadimos una trampa al array
-  gameArea.trampaGenerate();
+  gameArea.trampasGenerate();
   // Movemos cada una de las trampas del array
-  gameArea.trampaMove();
+  gameArea.trampasMove();
   // Actualizamos el movimiento del dragón
   dragon.newPos();
   dragon.update();
