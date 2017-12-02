@@ -14,11 +14,6 @@ Obstacles.prototype.update = function () {
   ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
-// Movimiento de la trampa -> updateGameArea
-Obstacles.prototype.newPos = function () {
-  this.x -= 4;
-};
-
 // Definimos colisiones entre los componentes
 Obstacles.prototype.crashWith = function (otherComponent) {
   var myLeft = this.x;

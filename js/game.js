@@ -34,33 +34,40 @@ var gameArea = {
     return true; 
   }
     return false;
-  }
+  },
+  proveCrash : function () {
+    var yPosition;
+    for (i = 0; i < trampaArray.length; i += 1) {
+      if (dragon.crashWith(trampaArray[i])) {
+        myGameArea.stop();
+      } 
+    }
+  },
+  trampaGenerate: function () {
+    if (gameArea.frameNo == 1 || gameArea.frameInterval(150)) {
+      yPosition = Math.floor(Math.random() * 500) - dragon.height;
+      trampaArray.push(new Obstacles(200, 20, "green", 1000, yPosition));
+    }
+  },
+  trampaMove: function () {
+    for (i = 0; i < trampaArray.length; i += 1) {
+      trampaArray[i].x += -4;
+      trampaArray[i].update();
+    }
+  },
 };
 
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del gameArea.
 function updateGameArea () {
   // Pasamos la colisión por cada uno de las trampas del array.
-  var x, y;
-  for (i = 0; i < trampaArray.length; i += 1) {
-    if (dragon.crashWith(trampaArray[i])) {
-      myGameArea.stop();
-      return;
-    } 
-  }
+  gameArea.proveCrash();
   // Vaciamos el canvas y aumentamos el frameNo
   gameArea.clear();
   gameArea.frameNo += 1;
-  // Por cada 150 frames, añadimos una trampa al array
-  if (gameArea.frameNo == 1 || gameArea.frameInterval(150)) {
-    x = gameArea.canvas.width;
-    y = gameArea.canvas.height - 200;
-    trampaArray.push(new Obstacles(10, 200, "green", x, y));
-  }
-  // Movemos cada uno de las trampas del array
-  for (i = 0; i < trampaArray.length; i += 1) {
-    trampaArray[i].x += -1;
-    trampaArray[i].update();
-  }
+  // Por cada n frames, añadimos una trampa al array
+  gameArea.trampaGenerate();
+  // Movemos cada una de las trampas del array
+  gameArea.trampaMove();
   // Actualizamos el movimiento del dragón
   dragon.newPos();
   dragon.update();
