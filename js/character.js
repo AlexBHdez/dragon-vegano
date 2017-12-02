@@ -1,5 +1,5 @@
 // Defino las propiedades básicas del personaje.
-function Character(width, height, color, x, y) {
+function Character(width, height, color, x, y, ctx) {
   this.width = width;
   this.height = height;
   this.color = color;
@@ -10,13 +10,14 @@ function Character(width, height, color, x, y) {
   this.gravity = 0.8;
   this.gravitySpeed = 0;
   this.bounce = 0.6;
+
+  this.ctx = ctx;
 }
 
 // Dibujo el personaje -> updateGameArea
 Character.prototype.update = function () {
-  ctx = gameArea.context;
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.x, this.y, this.width, this.height);
+  this.ctx.fillStyle = this.color;
+  this.ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
 // Añadimos la gravedad a la posición del personaje -> updateGameArea
@@ -26,9 +27,9 @@ Character.prototype.newPos = function () {
 };
 
 // Ponemos límites de suelo y techo y añadimos el rebote (que sólo debería existir cuando muera)
-Character.prototype.limits = function () {
-  var floor = gameArea.canvas.height - this.height;
-  var roof = gameArea.canvas.height - gameArea.canvas.height;
+Character.prototype.limits = function (height) {
+  var floor = height - this.height;
+  var roof = height - height;
   
   if (this.y > floor) {
     this.y = floor;
