@@ -14,13 +14,13 @@ function Character(width, height, color, x, y, ctx) {
   this.ctx = ctx;
 }
 
-// Dibujo el personaje -> updateGameArea
+// Dibujo el personaje
 Character.prototype.update = function () {
   this.ctx.fillStyle = this.color;
   this.ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
-// Añadimos la gravedad a la posición del personaje -> updateGameArea
+// Añadimos la gravedad a la posición del personaje
 Character.prototype.newPos = function () {
   this.gravitySpeed += this.gravity;
   this.y += this.speedY + this.gravitySpeed;
@@ -43,7 +43,6 @@ Character.prototype.limits = function (height) {
 // Asignamos la tecla 'espacio' para cambiar la gravedad y volar!!
 Character.prototype.flyControls = function () {
   document.onkeydown = function (e) {
-    
     switch (e.keyCode) {
       case 32:
         if(this.y > 0) {

@@ -1,13 +1,12 @@
+// Variables globales para crear el canvas y insertarlo en el body con el id gameArea
 var canvas = document.createElement('canvas');
-
 canvas.width = 1000;
 canvas.height = 500;
 var ctx = canvas.getContext('2d');
-// Función para empezar el juego e insertar el personaje
 document.body.insertBefore(canvas, document.body.childNodes[0]);
 $('canvas').attr('id', 'gameArea');
 
-// Define el área de juego y la inserta en el body.
+// Constructor del juego
 function Game (dragon, ctx, width, height) {
   this.width = width;
   this.height = height;
@@ -20,28 +19,28 @@ function Game (dragon, ctx, width, height) {
   this.frameNo = 0;
   this.gameInterval = undefined;
 };
-  
+// Método para los sets iniciales del juego  
 Game.prototype.start = function () {
   this.dragon.flyControls();
   this.counterBrocolis = 0;
   this.gameInterval = setInterval(this.updateGameArea.bind(this), 20);
 };
-  
+// Método para ir vaciar el canvas  
 Game.prototype.clear = function () {
   this.context.clearRect(0, 0, this.width, this.height);
 };
-
+// Método para parar el juego
 Game.prototype.stop = function () {
   clearInterval(this.gameInterval);
 };
-
+// Método para generar un elemento según los frames(n) indicados
 Game.prototype.frameInterval = function (n) {
   if ((this.frameNo / n) % 1 == 0) { 
     return true; 
   }
   return false;
 };
-
+// Método para las colisiones entre el dragón y los demás elementos.
 Game.prototype.proveCrash = function () {
     for (i = 0; i < this.trampaArray.length; i += 1) {
       if ( this.dragon.crashWith(this.trampaArray[i])) {
@@ -55,8 +54,6 @@ Game.prototype.proveCrash = function () {
     }
     
     this.brocoliArray.forEach(function (brocoli, index){
-      
-
       if (this.dragon.crashWith(brocoli)) {
         
         this.brocoliArray.splice(index, 1);
@@ -66,7 +63,7 @@ Game.prototype.proveCrash = function () {
       }
     }.bind(this));
 };
-
+// Método para generar las trampas, los pollos y los brócolis
 Game.prototype.trampasGenerate = function () {
     var yPosition;
     if (this.frameNo == 1 || this.frameInterval(150)) {
@@ -82,7 +79,7 @@ Game.prototype.trampasGenerate = function () {
       this.brocoliArray.push(new Brocoli(20, 20, "green", 1000, yPosition, this.context));
     }
 };
-  
+// Método para mover las trampas por el canvas  
 Game.prototype.trampasMove = function () {
     for (var i = 0; i < this.trampaArray.length; i += 1) {
       this.trampaArray[i].x += -4;
@@ -100,25 +97,22 @@ Game.prototype.trampasMove = function () {
 
 
 
-// Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del gameArea.
+// Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del método start del constructor.
 Game.prototype.updateGameArea = function () {
-  // Pasamos la colisión por cada uno de las trampas del array.
   this.proveCrash();
-  // Vaciamos el canvas y aumentamos el frameNo
+  
   this.clear();
   this.frameNo += 1;
-  // Por cada n frames, añadimos una trampa al array
+  
   this.trampasGenerate();
-  // Movemos cada una de las trampas del array
   this.trampasMove();
-  // Actualizamos el movimiento del dragón
+  
   this.dragon.newPos();
   this.dragon.update();
-  this.dragon.limits(canvas.height);
+  this.dragon.limits(canvas.height);  
 };
 
 function startGame() {
-
   var game = new Game(
     new Character(30, 30, 'red', 100, 500, ctx),
     ctx,
