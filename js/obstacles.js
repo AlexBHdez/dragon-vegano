@@ -10,7 +10,6 @@ function Obstacles(width, height, color, x, y, ctx) {
 
 // Dibujo el obstáculo -> updateGameArea
 Obstacles.prototype.update = function () {
-  
   this.ctx.fillStyle = this.color;
   this.ctx.fillRect(this.x, this.y, this.width, this.height);
 };
