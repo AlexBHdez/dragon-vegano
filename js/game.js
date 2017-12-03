@@ -76,7 +76,14 @@ Game.prototype._trapsGenerate = function () {
     }
     if (this.frameNo == 1 || this._frameInterval(50)) {
       yPosition = Math.floor(Math.random() * 500) - this.dragon.height;
-      this.broccolis.push(new Brocoli(20, 20, "green", 1000, yPosition, this.context));
+      this.broccolis.push(
+        new Brocoli(20, 20, "green", 1000, yPosition, this.context),
+        new Brocoli(20, 20, "green", 1022, yPosition, this.context),
+        new Brocoli(20, 20, "green", 1044, yPosition, this.context),
+        new Brocoli(20, 20, "green", 1066, yPosition, this.context),
+        new Brocoli(20, 20, "green", 1088, yPosition, this.context),
+    );
+      
     }
 };
 // Método para mover las trampas por el canvas  
