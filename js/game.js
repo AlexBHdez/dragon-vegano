@@ -17,6 +17,7 @@ function Game (dragon, ctx, width, height) {
   this.broccolis = [];
   this.context = ctx;
   this.frameNo = 0;
+  this.speed = 3;
   this.gameInterval = undefined;
 }
 // Método para los sets iniciales del juego  
@@ -51,8 +52,7 @@ Game.prototype._proveCrash = function () {
     if (this.dragon.crashWith(this.chickens[i])) {
       this._stop();
     }
-  }
-  
+  }  
   this.broccolis.forEach(function (broccoli, index){
     if (this.dragon.crashWith(broccoli)) {
       this.broccolis.splice(index, 1);
@@ -243,17 +243,16 @@ Game.prototype._trapsGenerate = function () {
 // Método para mover las trampas por el canvas  
 Game.prototype._trapsMovement = function () {
   /* jshint shadow:true */
-  this.speed = this.speed * this.acceleration;
   for (var i = 0; i < this.traps.length; i += 1) {
-    this.traps[i].x -= 3;
+    this.traps[i].x -= this.speed;
     this.traps[i].update();
   }
   for (var i = 0; i < this.chickens.length; i += 1) {
-    this.chickens[i].x -= 3;
+    this.chickens[i].x -= this.speed;
     this.chickens[i].update();
   }
   for (var i = 0; i < this.broccolis.length; i += 1) {
-    this.broccolis[i].x -= 3;
+    this.broccolis[i].x -= this.speed;
     this.broccolis[i].update();
   }
 };
@@ -264,6 +263,7 @@ Game.prototype.updateGameArea = function () {
   
   this._clear();
   this.frameNo += 1;
+  this.speed += 0.001;
   
   this._trapsGenerate();
   this._trapsMovement();
