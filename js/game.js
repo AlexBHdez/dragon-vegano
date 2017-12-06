@@ -7,10 +7,11 @@ document.body.insertBefore(canvas, document.body.childNodes[0]);
 $('canvas').attr('id', 'gameArea');
 
 // Constructor del juego
-function Game (dragon, ctx, width, height) {
+function Game (bg, dragon, ctx, width, height) {
   this.width = width;
   this.height = height;
   this.counterBrocolis = 0;
+  this.floor = bg;
   this.dragon = dragon;
   this.context = ctx;
   this.frameNo = 0;
@@ -178,13 +179,16 @@ Game.prototype.updateGameArea = function () {
   this._sceneCreator();
   this._sceneMovement();
   
+  this.floor.drawBackground();
   this.dragon.newPos();
   this.dragon.update();
-  this.dragon.limits(canvas.height);  
+  this.dragon.limits(canvas.height - 25); 
+  
 };
 
 function startGame() {
   var game = new Game(
+    new Floor(ctx),
     new Character(30, 30, 'red', 100, 470, ctx),
     ctx,
     canvas.width,
