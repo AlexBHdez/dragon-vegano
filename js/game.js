@@ -12,13 +12,23 @@ function Game (dragon, ctx, width, height) {
   this.height = height;
   this.counterBrocolis = 0;
   this.dragon = dragon;
-  this.traps = [];
-  this.chickens = [];
-  this.broccolis = [];
   this.context = ctx;
   this.frameNo = 0;
   this.speed = 3;
+  this.acceleration = 0.002;
   this.gameInterval = undefined;
+
+  // Arrays de elementos en el canvas
+  this.traps = [];
+  this.chickens = [];
+  this.broccolis = [];
+
+  // Para la generación de brocolis y trampas
+  this.maxPosition = 50;
+  this.minPosition = this.height - 100;
+  this.positionRandom = 0;
+  this.positionBroccoliIncrement = 0;
+  this.positionChicken = this.height - 20;
 }
 // Método para los sets iniciales del juego  
 Game.prototype.start = function () {
@@ -61,187 +71,87 @@ Game.prototype._proveCrash = function () {
     }
   }.bind(this));
 };
+// Linea horizontal de brócolis
+Game.prototype._broccolisHorizontalLine = function (quantity) {
+  positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
+  for (var i = 0; i < quantity; i++) {
+    this.broccolis.push(
+      new Brocoli(20, 20, "green", this.width + i * 25, positionRandom, this.context)
+    );
+  }
+};
+// Linea vertical de brócolis
+Game.prototype._broccolisVerticalLine = function (quantity) {
+  for (var i = 0; i < quantity; i++) {
+    this.broccolis.push(
+      new Brocoli(20, 20, "green", this.width, this.minPosition + i * -25, this.context)
+    );
+  }
+};
+// Diagonal de brócolis hacia abajo
+Game.prototype._broccolisDiagonalDown = function (quantity) {
+  for (var i = 0; i < quantity; i++) {
+    this.broccolis.push(
+      new Brocoli(20, 20, 'green', this.width + i * 25, this.maxPosition + i * 25, this.context)
+    );
+  }
+};
+// Diagonal de brócolis hacia arriba
+Game.prototype._broccolisDiagonalUp = function (quantity) {
+  for (var i = 0; i < quantity; i++) {
+    this.broccolis.push(
+      new Brocoli(20, 20, 'green', this.width + i * 25, this.minPosition - i * 25, this.context)
+    );
+  }
+};
+// Generador de trampas
+Game.prototype._trapAlone = function (quantity) {
+  for (var i = 0; i < quantity; i++) {
+    positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
+    this.traps.push(
+      new Obstacles(500, 10, 'black', this.width, positionRandom, this.context)
+    );
+  }
+};
+// Generador de pollos
+Game.prototype._chickensRandom = function (quantity) {
+  for (var i = 0; i < quantity; i++) {
+    positionRandom = Math.floor(Math.random() * (100 - 25 + 1) + 25);
+    this.chickens.push(
+      new Obstacles(20, 20, 'yellow', this.width + i * positionRandom, this.positionChicken, this.context)
+    );
+  }
+};
 // Método para generar las trampas, los pollos y los brócolis
-Game.prototype._trapsGenerate = function () {
-  var x = this.width;
-  var positionChicken = this.height - 20;
-  var positionY;
-  var maxPosition = 50;
-  var minPosition = this.height - 100;
-  var positionRandom;
-  var positionFixed = 150;
+Game.prototype._sceneCreator = function () {
   
   if (this._frameInterval(250) && this.frameNo <= 500) { // Scene 01 -> 10"
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionRandom, this.context)
-    );
+    this._broccolisHorizontalLine(10);
+
   } else if (this._frameInterval(250) && this.frameNo <= 1000) {   // Scene 02 -> 10"
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionRandom - 22, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionRandom - 44, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionRandom - 66, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionRandom - 66, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionRandom - 44, this.context),
-      new Brocoli(20, 20, "green", this.width + 132, positionRandom - 22, this.context),
-      new Brocoli(20, 20, "green", this.width + 154, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 77, positionRandom - 22, this.context),
-      new Brocoli(20, 20, "green", this.width + 77, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 77, positionRandom + 22, this.context),
-      new Brocoli(20, 20, "green", this.width + 77, positionRandom + 44, this.context)
-    );
-    this.chickens.push(
-      new Obstacles(20, 20, 'yellow', this.width, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 22, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 44, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 66, positionChicken, this.context)
-    ); 
+    this._broccolisVerticalLine(10);
+    this._chickensRandom(5);
+
   } else if (this._frameInterval(250) && this.frameNo <= 1500) { // Scene 03 -> 10"
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.traps.push(
-      new Obstacles(500, 10, 'black', this.width, positionRandom - 100, this.context)
-    );
+    this._chickensRandom(3);
+    this._broccolisDiagonalUp(10); 
     
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionRandom, this.context)
-    );
+  } else if (this._frameInterval(300) && this.frameNo <= 1500) { // Scene 03.2 -> 10"
+    this._broccolisDiagonalDown(10);
+
   } else if (this._frameInterval(250) && this.frameNo <= 2000) { // Scene 04 -> 10"
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionRandom, this.context),
-
-      new Brocoli(20, 20, "green", this.width + 200, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 222, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 244, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 266, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 288, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 310, positionRandom, this.context),
-
-      new Brocoli(20, 20, "green", this.width + 400, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 422, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 444, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 466, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 488, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width + 510, positionRandom, this.context)
-    );
-    this.traps.push(
-      new Obstacles(250, 10, 'black', this.width, positionRandom - 50, this.context),
-      new Obstacles(250, 10, 'black', this.width + 300, positionRandom + 50, this.context)
-    );
-    this.chickens.push(
-      new Obstacles(20, 20, 'yellow', this.width, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 22, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 44, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 66, positionChicken, this.context)
-    );
+    
   } else if (this._frameInterval(250) && this.frameNo <= 2500) { // Scene 05 -> 10"
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
-      new Brocoli(20, 20, "green", this.width, positionRandom + 22, this.context),
-      new Brocoli(20, 20, "green", this.width, positionRandom + 44, this.context),
-      new Brocoli(20, 20, "green", this.width, positionRandom + 66, this.context),
-      new Brocoli(20, 20, "green", this.width, positionRandom + 88, this.context),
-      new Brocoli(20, 20, "green", this.width, positionRandom + 110, this.context)
-    );
-    this.traps.push(
-      new Obstacles(10, 250, 'black', this.width + 100, positionRandom - 50, this.context)
-    );
-    this.chickens.push(
-      new Obstacles(20, 20, 'yellow', this.width, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 22, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 80, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 120, positionChicken, this.context)
-    );
+    
   } else if (this._frameInterval(250) && this.frameNo <= 3000) { // Scene 06 -> 10"
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 200, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 222, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 244, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 266, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 288, positionFixed, this.context),
-      new Brocoli(20, 20, "green", this.width + 310, positionFixed, this.context),
-
-      new Brocoli(20, 20, "green", this.width, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 200, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 222, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 244, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 266, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 288, positionFixed + 100, this.context),
-      new Brocoli(20, 20, "green", this.width + 310, positionFixed + 100, this.context),
-
-      new Brocoli(20, 20, "green", this.width, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 22, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 44, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 66, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 88, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 110, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 200, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 222, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 244, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 266, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 288, positionFixed + 200, this.context),
-      new Brocoli(20, 20, "green", this.width + 310, positionFixed + 200, this.context)
-    );
-    this.traps.push(
-      new Obstacles(330, 10, 'black', this.width, positionRandom - 50, this.context),
-      new Obstacles(330, 10, 'black', this.width, positionRandom + 50, this.context),
-      new Obstacles(330, 10, 'black', this.width, positionRandom + 150, this.context),
-      new Obstacles(330, 10, 'black', this.width, positionRandom + 250, this.context)
-    );
-    this.chickens.push(
-      new Obstacles(20, 20, 'yellow', this.width, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 50, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 80, positionChicken, this.context),
-      new Obstacles(20, 20, 'yellow', this.width + 140, positionChicken, this.context)
-    );
+    
   } else if (this._frameInterval(50) && this.frameNo > 3500) { // Final Scene
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, positionRandom, this.context)
-    );
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.traps.push(
-      new Obstacles(100, 10, 'black', this.width + 50, positionRandom, this.context)
-    );
-    positionRandom = Math.floor(Math.random() * (maxPosition - minPosition + 1) + minPosition);
-    this.chickens.push(
-      new Obstacles(20, 20, 'yellow', this.width + 100, positionChicken, this.context)
-    );
+    
   }
   
 };
 // Método para mover las trampas por el canvas  
-Game.prototype._trapsMovement = function () {
+Game.prototype._sceneMovement = function () {
   /* jshint shadow:true */
   for (var i = 0; i < this.traps.length; i += 1) {
     this.traps[i].x -= this.speed;
@@ -263,10 +173,10 @@ Game.prototype.updateGameArea = function () {
   
   this._clear();
   this.frameNo += 1;
-  this.speed += 0.001;
+  this.speed += this.acceleration;
   
-  this._trapsGenerate();
-  this._trapsMovement();
+  this._sceneCreator();
+  this._sceneMovement();
   
   this.dragon.newPos();
   this.dragon.update();
@@ -275,7 +185,7 @@ Game.prototype.updateGameArea = function () {
 
 function startGame() {
   var game = new Game(
-    new Character(30, 30, 'red', 100, 500, ctx),
+    new Character(30, 30, 'red', 100, 470, ctx),
     ctx,
     canvas.width,
     canvas.height

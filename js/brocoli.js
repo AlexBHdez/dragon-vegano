@@ -6,6 +6,7 @@ function Brocoli(width, height, color, x, y, ctx) {
   this.x = x;
   this.y = y;
   this.ctx = ctx;
+  this.broccolis = [];
 }
 
 // Dibujo el brócoli --> updateGameArea
@@ -32,3 +33,21 @@ Brocoli.prototype.eatBrocoli = function () {
   }
   return crash;
 };
+
+// Brocoli.prototype.broccolisLine = function (positionRandom) {
+//   for (var i = 0; i < 10; i++) {
+//     this.broccolis.push(
+//       new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
+//       new Brocoli(20, 20, "green", this.width + 22, positionRandom, this.context)
+//     );
+//   }
+
+  // this.broccolis.push(
+  //   new Brocoli(20, 20, "green", this.width, positionRandom, this.context),
+  //   new Brocoli(20, 20, "green", this.width + 22, positionRandom, this.context),
+  //   new Brocoli(20, 20, "green", this.width + 44, positionRandom, this.context),
+  //   new Brocoli(20, 20, "green", this.width + 66, positionRandom, this.context),
+  //   new Brocoli(20, 20, "green", this.width + 88, positionRandom, this.context),
+  //   new Brocoli(20, 20, "green", this.width + 110, positionRandom, this.context)
+  // );
+// };
