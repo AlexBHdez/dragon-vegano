@@ -7,11 +7,11 @@ document.body.insertBefore(canvas, document.body.childNodes[0]);
 $('canvas').attr('id', 'gameArea');
 
 // Constructor del juego
-function Game (bg, dragon, ctx, width, height) {
+function Game (floor, dragon, ctx, width, height) {
   this.width = width;
   this.height = height;
   this.counterBrocolis = 0;
-  this.floor = bg;
+  this.floor = floor;
   this.dragon = dragon;
   this.context = ctx;
   this.frameNo = 0;
@@ -29,13 +29,14 @@ function Game (bg, dragon, ctx, width, height) {
   this.minPosition = this.height - 100;
   this.positionRandom = 0;
   this.positionBroccoliIncrement = 0;
-  this.positionChicken = this.height - 20;
+  this.positionChicken = this.height - 50;
 }
 // Método para los sets iniciales del juego  
 Game.prototype.start = function () {
   this.dragon.flyControls();
   this.broccolisEaten = 0;
   this.gameInterval = setInterval(this.updateGameArea.bind(this), 20);
+  this.dragon.updateFrame();
 };
 // Método para ir vaciando el canvas  
 Game.prototype._clear = function () {
@@ -176,20 +177,20 @@ Game.prototype.updateGameArea = function () {
   this.frameNo += 1;
   this.speed += this.acceleration;
   
+  this.floor.drawBackground();
+
   this._sceneCreator();
   this._sceneMovement();
   
-  this.floor.drawBackground();
   this.dragon.newPos();
-  this.dragon.update();
+  this.dragon.drawCharacter();
   this.dragon.limits(canvas.height - 25); 
-  
 };
 
 function startGame() {
   var game = new Game(
     new Floor(ctx),
-    new Character(30, 30, 'red', 100, 470, ctx),
+    new Character(100, 200, ctx),
     ctx,
     canvas.width,
     canvas.height

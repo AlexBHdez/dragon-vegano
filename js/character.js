@@ -1,23 +1,44 @@
 // Defino las propiedades básicas del personaje.
-function Character(width, height, color, x, y, ctx) {
-  this.width = width;
-  this.height = height;
-  this.color = color;
+function Character(x, y, ctx) {
+  
   this.x = x;
   this.y = y;
+  this.ctx = ctx;
+  
   this.speedY = 0;
-
   this.gravity = 0.8;
   this.gravitySpeed = 0;
   this.bounce = 0.6;
 
-  this.ctx = ctx;
+
+  this.spriteWidth = 1860;
+  this.spriteHeight = 60;
+  this.spriteRows = 1;
+  this.spriteColumns = 26;
+  this.spriteWalk = 1;
+  this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
+  this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
+  this.currentFrame = 0;
+  this.srcX = 0;
+  this.srcY = 0;
+  this.frameCount = 26;
+  this.walk = true;
+  this.characterImage = new Image();
+  this.characterImage.src = 'assets/walk_cycle_60x1860.png';
+
 }
 
 // Dibujo el personaje
-Character.prototype.update = function () {
-  this.ctx.fillStyle = this.color;
-  this.ctx.fillRect(this.x, this.y, this.width, this.height);
+Character.prototype.updateFrame = function () {
+  this.framInterval = setInterval(function () {
+    this.currentFrame = ++this.currentFrame % this.frameCount;
+    this.srcX = this.currentFrame * this.spriteFrameWidth;
+  }.bind(this), 30);
+};
+
+Character.prototype.drawCharacter = function () {
+  // this.updateFrame();
+  this.ctx.drawImage(this.characterImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteFrameWidth, this.spriteFrameHeight);
 };
 
 // Añadimos la gravedad a la posición del personaje
@@ -28,7 +49,7 @@ Character.prototype.newPos = function () {
 
 // Ponemos límites de suelo y techo y añadimos el rebote (que sólo debería existir cuando muera)
 Character.prototype.limits = function (height) {
-  var floor = height - this.height;
+  var floor = height - this.spriteFrameHeight;
   var roof = height - height;
   
   if (this.y > floor) {
@@ -68,9 +89,9 @@ Character.prototype.flyControls = function () {
 // Definimos colisiones entre los componentes
 Character.prototype.crashWith = function (otherComponent) {
   var myLeft = this.x;
-  var myRight = this.x + (this.width);
+  var myRight = this.x + (this.spriteFrameWidth);
   var myTop = this.y;
-  var myBottom = this.y + (this.height);
+  var myBottom = this.y + (this.spriteFrameHeight);
 
   var otherLeft = otherComponent.x;
   var otherRight = otherComponent.x + (otherComponent.width);

@@ -3,7 +3,7 @@ function Floor(ctx) {
   this.ctx = ctx;
 
   this.image = new Image();
-  this.image.src = 'assets/floor.png';
+  this.image.src = 'assets/dragon-vegano-floor.png';
 }
 
 Floor.prototype.drawBackground = function () {
