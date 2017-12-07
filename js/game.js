@@ -56,17 +56,17 @@ Game.prototype._frameInterval = function (n) {
 // Método para las colisiones entre el dragón y los demás elementos.
 Game.prototype._proveCrash = function () {
   for (i = 0; i < this.traps.length; i += 1) {
-    if ( this.dragon.crashWith(this.traps[i])) {
+    if ( this.dragon.crashWith(this.traps[i]) ) {
       this._stop();
     } 
   }
   for (i = 0; i < this.chickens.length; i += 1) {
-    if (this.dragon.crashWith(this.chickens[i])) {
+    if ( this.dragon.crashWith(this.chickens[i]) ) {
       this._stop();
     }
   }  
   this.broccolis.forEach(function (broccoli, index){
-    if (this.dragon.crashWith(broccoli)) {
+    if ( this.dragon.crashWith(broccoli) ) {
       this.broccolis.splice(index, 1);
       this.broccolisEaten += 1;
       console.log("counterBrocolis", this.broccolisEaten);
@@ -78,7 +78,27 @@ Game.prototype._broccolisHorizontalLine = function (quantity) {
   positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
   for (var i = 0; i < quantity; i++) {
     this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width + i * 25, positionRandom, this.context)
+      new Brocoli(this.width + i * 25, positionRandom, this.context)
+    );
+  }
+};
+
+Game.prototype._broccolisThreeLine = function (quantity) {
+  /* jshint shadow:true */
+  positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
+  for (var i = 0; i < (quantity / 3) + 2; i++) {
+    this.broccolis.push(
+      new Brocoli((this.width + i * 25) - 25, positionRandom, this.context)
+    );
+  }
+  for (var i = 0; i < quantity / 3; i++) {
+    this.broccolis.push(
+      new Brocoli(this.width + i * 25, positionRandom + 25, this.context)
+    );
+  }
+  for (var i = 0; i < quantity / 3; i++) {
+    this.broccolis.push(
+      new Brocoli(this.width + i * 25, positionRandom - 25, this.context)
     );
   }
 };
@@ -86,7 +106,7 @@ Game.prototype._broccolisHorizontalLine = function (quantity) {
 Game.prototype._broccolisVerticalLine = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     this.broccolis.push(
-      new Brocoli(20, 20, "green", this.width, this.minPosition + i * -25, this.context)
+      new Brocoli(this.width, this.minPosition + i * -25, this.context)
     );
   }
 };
@@ -94,7 +114,7 @@ Game.prototype._broccolisVerticalLine = function (quantity) {
 Game.prototype._broccolisDiagonalDown = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     this.broccolis.push(
-      new Brocoli(20, 20, 'green', this.width + i * 25, this.maxPosition + i * 25, this.context)
+      new Brocoli(this.width + i * 25, this.maxPosition + i * 25, this.context)
     );
   }
 };
@@ -102,16 +122,16 @@ Game.prototype._broccolisDiagonalDown = function (quantity) {
 Game.prototype._broccolisDiagonalUp = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     this.broccolis.push(
-      new Brocoli(20, 20, 'green', this.width + i * 25, this.minPosition - i * 25, this.context)
+      new Brocoli(this.width + i * 25, this.minPosition - i * 25, this.context)
     );
   }
 };
-// Generador de trampas
-Game.prototype._trapAlone = function (quantity) {
+// Generador de trampas verticales
+Game.prototype._trapHorizontal = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
     this.traps.push(
-      new Obstacles(500, 10, 'black', this.width, positionRandom, this.context)
+      new Traps(this.width, positionRandom, this.context)
     );
   }
 };
@@ -120,26 +140,24 @@ Game.prototype._chickensRandom = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (100 - 25 + 1) + 25);
     this.chickens.push(
-      new Obstacles(20, 20, 'yellow', this.width + i * positionRandom, this.positionChicken, this.context)
+      new Chickens(20, 20, 'yellow', this.width + i * positionRandom, this.positionChicken, this.context)
     );
   }
 };
 // Método para generar las trampas, los pollos y los brócolis
 Game.prototype._sceneCreator = function () {
   
-  if (this._frameInterval(250) && this.frameNo <= 500) { // Scene 01 -> 10"
-    this._broccolisHorizontalLine(10);
+  if (this._frameInterval(166) && this.frameNo <= 500) { // Scene 01 -> 10"
+    this._broccolisThreeLine(27);
 
-  } else if (this._frameInterval(250) && this.frameNo <= 1000) {   // Scene 02 -> 10"
-    this._broccolisVerticalLine(10);
-    this._chickensRandom(5);
+  } else if (this._frameInterval(166) && this.frameNo <= 1000) {   // Scene 02 -> 10"
+    this._trapHorizontal(1);
 
   } else if (this._frameInterval(250) && this.frameNo <= 1500) { // Scene 03 -> 10"
-    this._chickensRandom(3);
-    this._broccolisDiagonalUp(10); 
+    
     
   } else if (this._frameInterval(300) && this.frameNo <= 1500) { // Scene 03.2 -> 10"
-    this._broccolisDiagonalDown(10);
+    
 
   } else if (this._frameInterval(250) && this.frameNo <= 2000) { // Scene 04 -> 10"
     
@@ -157,7 +175,8 @@ Game.prototype._sceneMovement = function () {
   /* jshint shadow:true */
   for (var i = 0; i < this.traps.length; i += 1) {
     this.traps[i].x -= this.speed;
-    this.traps[i].update();
+    this.traps[i].updateFrame();
+    this.traps[i].drawTrap();
   }
   for (var i = 0; i < this.chickens.length; i += 1) {
     this.chickens[i].x -= this.speed;
@@ -165,7 +184,8 @@ Game.prototype._sceneMovement = function () {
   }
   for (var i = 0; i < this.broccolis.length; i += 1) {
     this.broccolis[i].x -= this.speed;
-    this.broccolis[i].update();
+    this.broccolis[i].updateFrame();
+    this.broccolis[i].drawTrap();
   }
 };
 

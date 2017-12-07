@@ -1,10 +1,11 @@
-function Brocoli(x, y, ctx) {
+// Defino las propiedades básicas de las trampas.
+function Traps(x, y, ctx) {
   this.x = x;
   this.y = y;
   this.ctx = ctx;
 
-  this.spriteWidth = 20;
-  this.spriteHeight = 20;
+  this.spriteWidth = 200;
+  this.spriteHeight = 30;
   this.spriteRows = 1;
   this.spriteColumns = 1;
   this.spriteRotate = 1;
@@ -15,22 +16,24 @@ function Brocoli(x, y, ctx) {
   this.srcY = 0;
   this.frameCount = 1;
   this.rotate = true;
-  this.brocoliImage = new Image();
-  this.brocoliImage.src = 'assets/brocoli-20x20.png';
-}
+  this.trapImage = new Image();
+  this.trapImage.src = 'assets/trap-brocheta-200x30.png';
+}  
 
-Brocoli.prototype.updateFrame = function () {
+// Dibujo la trampa -> updateGameArea
+Traps.prototype.updateFrame = function () {
   this.frameInterval = setInterval(function () {
     this.currentFrame = ++this.currentFrame % this.frameCount;
     this.srcX = this.currentFrame * this.spriteFrameWidth;  
   }.bind(this), 30);
 };
 
-Brocoli.prototype.drawTrap = function () {
-  this.ctx.drawImage(this.brocoliImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteWidth, this.spriteHeight);
+Traps.prototype.drawTrap = function () {
+  this.ctx.drawImage(this.trapImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteWidth, this.spriteHeight);
 };
 
-Brocoli.prototype.crashWith = function (otherComponent) {
+// Definimos colisiones entre los componentes
+Traps.prototype.crashWith = function (otherComponent) {
   var myLeft = this.x;
   var myRight = this.x + this.spriteFrameWidth;
   var myTop = this.y;
@@ -48,3 +51,5 @@ Brocoli.prototype.crashWith = function (otherComponent) {
   }
   return crash;
 };
+
+

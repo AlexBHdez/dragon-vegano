@@ -30,14 +30,13 @@ function Character(x, y, ctx) {
 
 // Dibujo el personaje
 Character.prototype.updateFrame = function () {
-  this.framInterval = setInterval(function () {
+  this.frameInterval = setInterval(function () {
     this.currentFrame = ++this.currentFrame % this.frameCount;
     this.srcX = this.currentFrame * this.spriteFrameWidth;
   }.bind(this), 30);
 };
 
 Character.prototype.drawCharacter = function () {
-  // this.updateFrame();
   this.ctx.drawImage(this.characterImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteFrameWidth, this.spriteFrameHeight);
 };
 
@@ -89,14 +88,14 @@ Character.prototype.flyControls = function () {
 // Definimos colisiones entre los componentes
 Character.prototype.crashWith = function (otherComponent) {
   var myLeft = this.x;
-  var myRight = this.x + (this.spriteFrameWidth);
+  var myRight = this.x + this.spriteFrameWidth;
   var myTop = this.y;
-  var myBottom = this.y + (this.spriteFrameHeight);
+  var myBottom = this.y + this.spriteFrameHeight;
 
   var otherLeft = otherComponent.x;
-  var otherRight = otherComponent.x + (otherComponent.width);
+  var otherRight = otherComponent.x + (otherComponent.spriteFrameWidth);
   var otherTop = otherComponent.y;
-  var otherBottom = otherComponent.y + (otherComponent.height);
+  var otherBottom = otherComponent.y + (otherComponent.spriteFrameHeight);
 
   var crash = true;
 
