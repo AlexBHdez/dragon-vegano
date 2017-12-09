@@ -5,6 +5,7 @@ canvas.height = 500;
 var ctx = canvas.getContext('2d');
 document.body.insertBefore(canvas, document.body.childNodes[0]);
 $('canvas').attr('id', 'gameArea');
+$('canvas').attr('moz-opaque', '');
 
 // Constructor del juego
 function Game (floor, dragon, ctx, width, height) {
@@ -187,6 +188,23 @@ Game.prototype._sceneMovement = function () {
     this.broccolis[i].updateFrame();
     this.broccolis[i].drawTrap();
   }
+  this._emptyBroccolis();
+};
+
+Game.prototype._emptyBroccolis = function () {
+  this.broccolis.forEach(function (item, index, array) {
+    if (item.x < -150) {
+      array.splice(item, 1);
+    }
+  });
+};
+
+Game.prototype._emptyTraps = function () {
+  this.traps.forEach(function (item, index, array) {
+    if (item.x < -200) {
+      array.splice(item, 1);
+    }
+  });
 };
 
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del método start del constructor.
