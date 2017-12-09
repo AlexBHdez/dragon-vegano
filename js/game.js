@@ -16,7 +16,7 @@ function Game (floor, dragon, ctx, width, height) {
   this.dragon = dragon;
   this.context = ctx;
   this.frameNo = 0;
-  this.speed = 3;
+  this.speed = 2;
   this.acceleration = 0.002;
   this.gameInterval = undefined;
 
@@ -36,7 +36,7 @@ function Game (floor, dragon, ctx, width, height) {
 Game.prototype.start = function () {
   this.dragon.flyControls();
   this.broccolisEaten = 0;
-  this.gameInterval = setInterval(this.updateGameArea.bind(this), 20);
+  this.updateGameArea();
   this.dragon.updateFrame();
 };
 // Método para ir vaciando el canvas  
@@ -209,6 +209,7 @@ Game.prototype._emptyTraps = function () {
 
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del método start del constructor.
 Game.prototype.updateGameArea = function () {
+  this.gameInterval = window.requestAnimationFrame(this.updateGameArea.bind(this));
   this._proveCrash();
   
   this._clear();
