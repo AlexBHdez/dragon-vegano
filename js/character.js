@@ -6,7 +6,7 @@ function Character(x, y, ctx) {
   this.ctx = ctx;
   
   this.speedY = 0;
-  this.gravity = 0.8;
+  this.gravity = 0.6;
   this.gravitySpeed = 0;
   this.bounce = 0.6;
 
@@ -66,10 +66,10 @@ Character.prototype.flyControls = function () {
     switch (e.keyCode) {
       case 32:
         if(this.y > 0) {
-          this.gravity = -0.8;
+          this.gravity = -0.6;
         } 
         else {
-            this.gravity = 0.8;
+            this.gravity = 0.6;
             this.y = 0;
         }
         break;
@@ -79,7 +79,7 @@ Character.prototype.flyControls = function () {
   document.onkeyup = function (e) {
     switch (e.keyCode) {
       case 32:
-        this.gravity = 0.8;
+        this.gravity = 0.6;
         break;
     }
   }.bind(this);

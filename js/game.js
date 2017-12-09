@@ -5,7 +5,6 @@ canvas.height = 500;
 var ctx = canvas.getContext('2d');
 document.body.insertBefore(canvas, document.body.childNodes[0]);
 $('canvas').attr('id', 'gameArea');
-$('canvas').attr('moz-opaque', '');
 
 // Constructor del juego
 function Game (floor, dragon, ctx, width, height) {
@@ -45,7 +44,8 @@ Game.prototype._clear = function () {
 };
 // Método para parar el juego
 Game.prototype._stop = function () {
-  clearInterval(this.gameInterval);
+  // clearInterval(this.gameInterval);
+  window.cancelAnimationFrame(this.gameInterval);
 };
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
