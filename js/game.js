@@ -25,7 +25,7 @@ function Game (floor, dragon, ctx, width, height) {
   this.chickens = [];
   this.broccolis = [];
   this.steaks = [];
-  this.broccoliScore = [];
+  this.broccoliScore = new Broccoli(60, 35, this.context);
 
   // Para la generación de broccolis y trampas
   this.maxPosition = 50;
@@ -237,6 +237,8 @@ Game.prototype._sceneMovement = function () {
     this.broccoliScore[i].updateFrame();
     this.broccoliScore[i].drawTrap();
   }
+  this.broccoliScore.updateFrame();
+  this.broccoliScore.drawTrap();
   this._emptyBroccolis();
   this._emptyTraps();
   this._emptySteaks();
@@ -286,13 +288,12 @@ Game.prototype.updateGameArea = function () {
   
   this.scoreBroccoli();
   this.scoreDistance();
-  this.broccoliScoreBoard();
 }; 
 
 var startGame = function () {
   var game = new Game(
     new Floor(ctx),
-    new Character(100, 200, ctx),
+    new Character(200, 200, ctx),
     ctx,
     canvas.width,
     canvas.height
@@ -305,7 +306,7 @@ var startGame = function () {
 
 Game.prototype.scoreBroccoli = function () {
   ctx.font = '22px Bungee';
-  ctx.fillStyle = '#00b570';
+  ctx.fillStyle = '#006931';
   if (this.broccolisEaten < 10) {
     ctx.fillText('00' + this.broccolisEaten, 6, 52);  
   } else if (this.broccolisEaten >= 10) {
@@ -315,21 +316,15 @@ Game.prototype.scoreBroccoli = function () {
   }
 };
 
-Game.prototype.broccoliScoreBoard = function () {
-  this.broccoliScore.push(
-    new Broccoli(60, 35, this.context)
-  );
-};
-
 Game.prototype.scoreDistance = function () {
   this.distance = Math.trunc(this.speed * this.frameNo / 60); 
   ctx.font = '30px Bungee';
   ctx.fillStyle = '#411e0a';
   if (this.distance < 10) {
     ctx.fillText('000' + this.distance, 5, 30);
-  } else if (this.distance >= 10) {
+  } else if (this.distance >= 10 && this.distance < 100) {
     ctx.fillText('00' + this.distance, 5, 30);
-  } else if (this.distance >= 100) {
+  } else if (this.distance >= 100 && this.distance < 1000) {
     ctx.fillText('0' + this.distance, 5, 30);
   } else if (this.distance >= 1000) {
     ctx.fillText(this.distance, 5, 30);

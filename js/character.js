@@ -30,10 +30,9 @@ function Character(x, y, ctx) {
 
 // Dibujo el personaje
 Character.prototype.updateFrame = function () {
-  this.frameInterval = setInterval(function () {
-    this.currentFrame = ++this.currentFrame % this.frameCount;
-    this.srcX = this.currentFrame * this.spriteFrameWidth;
-  }.bind(this), 20);
+  this.currentFrame = ++this.currentFrame % this.frameCount;
+  this.srcX = this.currentFrame * this.spriteFrameWidth;
+  this.frameInterval = window.requestAnimationFrame(this.updateFrame.bind(this));
 };
 
 Character.prototype.drawCharacter = function () {
