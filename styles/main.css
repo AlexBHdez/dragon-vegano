@@ -2,9 +2,22 @@ body {
   background-color: rgba(128, 128, 128, 0.356);
 }
 
-#gameArea {
-  background-color: white;
-  border: 1px solid grey;
-  margin: 50px auto;
+#canvas-wrap canvas{
   display: block;
+  margin: 0 auto;
+  border: 1px solid grey;
+}
+
+#canvas-wrap #overlay {
+  display: block;
+  margin: 0 auto;
+  width: 1000px;
+}
+
+#scoreboard .distance {
+  color: red;
+  position: absolute;
+  top: 20px;
+  margin-left: 10px;
+  z-index: 100;
 }

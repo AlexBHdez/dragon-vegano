@@ -8,7 +8,7 @@ function Character(x, y, ctx) {
   this.speedY = 0;
   this.gravity = 0.6;
   this.gravitySpeed = 0;
-  this.bounce = 0.6;
+  this.bounce = 0.3;
 
 
   this.spriteWidth = 1860;
@@ -33,7 +33,7 @@ Character.prototype.updateFrame = function () {
   this.frameInterval = setInterval(function () {
     this.currentFrame = ++this.currentFrame % this.frameCount;
     this.srcX = this.currentFrame * this.spriteFrameWidth;
-  }.bind(this), 30);
+  }.bind(this), 20);
 };
 
 Character.prototype.drawCharacter = function () {
@@ -72,7 +72,7 @@ Character.prototype.flyControls = function () {
             this.gravity = 0.6;
             this.y = 0;
         }
-        break;
+        break; 
     }
   }.bind(this);
 
