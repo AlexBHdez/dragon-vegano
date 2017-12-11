@@ -1,4 +1,4 @@
-function Floor(ctx) {
+function Backgrounds(ctx) {
   
   this.ctx = ctx;
 
@@ -6,7 +6,7 @@ function Floor(ctx) {
   this.image.src = 'assets/dragon-vegano-floor.png';
 }
 
-Floor.prototype.drawBackground = function () {
-  this.ctx.drawImage(this.image, 0, 400);
+Backgrounds.prototype.drawBackground = function () {
+  this.ctx.drawImage(this.image, 0, 450);
 };
 

@@ -103,3 +103,9 @@ Character.prototype.crashWith = function (otherComponent) {
   }
   return crash;
 };
+
+// Character.prototype.shadow = function () {
+//   this.ctx.fillStyle = '#000000';
+//   this.ctx.fillRect(this.x, this.y + this.y, this.spriteFrameWidth, 10);
+//   this.frameInterval = window.requestAnimationFrame(this.shadow.bind(this));
+// };

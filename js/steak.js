@@ -29,22 +29,3 @@ Steaks.prototype.updateFrame = function () {
 Steaks.prototype.drawSteak = function () {
   this.ctx.drawImage(this.characterImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteFrameWidth, this.spriteFrameHeight);
 };
-
-Steaks.prototype.crashWith = function (otherComponent) {
-  var myLeft = this.x;
-  var myRight = this.x + this.spriteFrameWidth;
-  var myTop = this.y;
-  var myBottom = this.y + this.spriteFrameHeight;
-
-  var otherLeft = otherComponent.x;
-  var otherRight = otherComponent.x + (otherComponent.width);
-  var otherTop = otherComponent.y;
-  var otherBottom = otherComponent.y + (otherComponent.height);
-
-  var crash = true;
-
-  if (myBottom < otherTop || myTop > otherBottom || myRight < otherLeft || myLeft > otherRight) {
-    crash = false;
-  }
-  return crash;
-};

@@ -6,6 +6,17 @@ canvas.height = 500;
 var ctx = canvas.getContext('2d');
 $('#canvas-wrap').prepend(canvas);
 
+var startGame = function () {
+  var game = new Game(
+    new Backgrounds(ctx),
+    new Character(200, 200, ctx),
+    ctx,
+    canvas.width,
+    canvas.height
+  );
+  game.start();
+};
+
 // Constructor del juego
 function Game (floor, dragon, ctx, width, height) {
   this.width = width;
@@ -55,31 +66,6 @@ Game.prototype._frameInterval = function (n) {
   }
   return false;
 };
-// Método para las colisiones entre el dragón y los demás elementos.
-Game.prototype._proveCrash = function () {
-  for (i = 0; i < this.traps.length; i += 1) {
-    if ( this.dragon.crashWith(this.traps[i]) ) {
-      this._stop();
-    } 
-  }
-  for (i = 0; i < this.steaks.length; i += 1) {
-    if (this.dragon.crashWith(this.steaks[i])) {
-      this._stop();
-    }
-  }
-  for (i = 0; i < this.chickens.length; i += 1) {
-    if ( this.dragon.crashWith(this.chickens[i]) ) {
-      this._stop();
-    }
-  }  
-  this.broccolis.forEach(function (broccoli, index){
-    if ( this.dragon.crashWith(broccoli) ) {
-      this.broccolis.splice(index, 1);
-      this.broccolisEaten += 1;
-    }
-  }.bind(this));
-};
-
 //--------------------------------------------------------------------------------------------------------------
 // Linea horizontal de brócolis
 Game.prototype._broccolisHorizontalLine = function (quantity) {
@@ -244,6 +230,31 @@ Game.prototype._sceneMovement = function () {
   this._emptySteaks();
 };
 
+// Método para las colisiones entre el dragón y los demás elementos.
+Game.prototype._proveCrash = function () {
+  for (i = 0; i < this.traps.length; i += 1) {
+    if (this.dragon.crashWith(this.traps[i])) {
+      this._stop();
+    }
+  }
+  for (i = 0; i < this.steaks.length; i += 1) {
+    if (this.dragon.crashWith(this.steaks[i])) {
+      this._stop();
+    }
+  }
+  for (i = 0; i < this.chickens.length; i += 1) {
+    if (this.dragon.crashWith(this.chickens[i])) {
+      this._stop();
+    }
+  }
+  this.broccolis.forEach(function (broccoli, index) {
+    if (this.dragon.crashWith(broccoli)) {
+      this.broccolis.splice(index, 1);
+      this.broccolisEaten += 1;
+    }
+  }.bind(this));
+};
+
 Game.prototype._emptyBroccolis = function () {
   this.broccolis.forEach(function (item, index, array) {
     if (item.x < -250) {
@@ -268,6 +279,37 @@ Game.prototype._emptySteaks = function () {
   });
 };
 
+// ScoreBoard ___________________________________________________
+Game.prototype.scoreBroccoli = function () {
+  ctx.font = '22px Bungee';
+  ctx.fillStyle = '#006931';
+  if (this.broccolisEaten < 10) {
+    ctx.fillText('00' + this.broccolisEaten, 6, 52);
+  } else if (this.broccolisEaten >= 10) {
+    ctx.fillText('0' + this.broccolisEaten, 6, 52);
+  } else if (this.broccolisEaten >= 100) {
+    ctx.fillText(this.broccolisEaten, 6, 52);
+  }
+};
+
+Game.prototype.scoreDistance = function () {
+  this.distance = Math.trunc(this.speed * this.frameNo / 60);
+  ctx.font = '30px Bungee';
+  ctx.fillStyle = '#411e0a';
+  if (this.distance < 10) {
+    ctx.fillText('000' + this.distance, 5, 30);
+  } else if (this.distance >= 10 && this.distance < 100) {
+    ctx.fillText('00' + this.distance, 5, 30);
+  } else if (this.distance >= 100 && this.distance < 1000) {
+    ctx.fillText('0' + this.distance, 5, 30);
+  } else if (this.distance >= 1000) {
+    ctx.fillText(this.distance, 5, 30);
+  }
+  ctx.font = '24px Bungee';
+  ctx.fillStyle = '#985c35';
+  ctx.fillText('M', 91, 30);
+};
+
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del método start del constructor.
 Game.prototype.updateGameArea = function () {
   this.gameInterval = window.requestAnimationFrame(this.updateGameArea.bind(this));
@@ -289,47 +331,3 @@ Game.prototype.updateGameArea = function () {
   this.scoreBroccoli();
   this.scoreDistance();
 }; 
-
-var startGame = function () {
-  var game = new Game(
-    new Floor(ctx),
-    new Character(200, 200, ctx),
-    ctx,
-    canvas.width,
-    canvas.height
-  );
-  game.start();
-};
-
-
-// ScoreBoard ___________________________________________________
-
-Game.prototype.scoreBroccoli = function () {
-  ctx.font = '22px Bungee';
-  ctx.fillStyle = '#006931';
-  if (this.broccolisEaten < 10) {
-    ctx.fillText('00' + this.broccolisEaten, 6, 52);  
-  } else if (this.broccolisEaten >= 10) {
-    ctx.fillText('0'+this.broccolisEaten, 6, 52);
-  } else if (this.broccolisEaten >= 100) {
-    ctx.fillText(this.broccolisEaten, 6, 52);
-  }
-};
-
-Game.prototype.scoreDistance = function () {
-  this.distance = Math.trunc(this.speed * this.frameNo / 60); 
-  ctx.font = '30px Bungee';
-  ctx.fillStyle = '#411e0a';
-  if (this.distance < 10) {
-    ctx.fillText('000' + this.distance, 5, 30);
-  } else if (this.distance >= 10 && this.distance < 100) {
-    ctx.fillText('00' + this.distance, 5, 30);
-  } else if (this.distance >= 100 && this.distance < 1000) {
-    ctx.fillText('0' + this.distance, 5, 30);
-  } else if (this.distance >= 1000) {
-    ctx.fillText(this.distance, 5, 30);
-  }
-  ctx.font = '24px Bungee';
-  ctx.fillStyle = '#985c35';
-  ctx.fillText('M', 91, 30);
-};
