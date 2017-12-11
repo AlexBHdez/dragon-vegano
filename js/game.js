@@ -30,13 +30,13 @@ function Game (floor, dragon, ctx, width, height) {
   this.speedSteak = 7;
   this.acceleration = 0.002;
   this.gameInterval = undefined;
+  this.broccoliScore = new Broccoli(60, 35, this.context);
 
   // Arrays de elementos en el canvas
   this.traps = [];
   this.chickens = [];
   this.broccolis = [];
   this.steaks = [];
-  this.broccoliScore = new Broccoli(60, 35, this.context);
 
   // Para la generación de broccolis y trampas
   this.maxPosition = 50;
@@ -310,6 +310,15 @@ Game.prototype.scoreDistance = function () {
   ctx.fillText('M', 91, 30);
 };
 
+Game.prototype._shadow = function () {
+  ctx.beginPath();
+  ctx.moveTo(20,20);
+  ctx.ellipse(240, 475, 2, 25 * this.dragon.y * 0.004, 90 * Math.PI / 180, 0, 2 * Math.PI);
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+  ctx.fill();
+};
+
+//__________________________________________________________________________________________________________________________
 // Actualiza el área de juego (canvas) cada 20ms, indicado en el setInterval del método start del constructor.
 Game.prototype.updateGameArea = function () {
   this.gameInterval = window.requestAnimationFrame(this.updateGameArea.bind(this));
@@ -324,6 +333,7 @@ Game.prototype.updateGameArea = function () {
   this._sceneCreator();
   this._sceneMovement();
   
+  this._shadow();
   this.dragon.newPos();
   this.dragon.drawCharacter();
   this.dragon.limits(canvas.height - 25);
