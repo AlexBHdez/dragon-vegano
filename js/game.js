@@ -8,7 +8,7 @@ $('#canvas-wrap').prepend(canvas);
 
 var startGame = function () {
   var game = new Game(
-    new Backgrounds(ctx),
+    new Backgrounds(canvas.height, ctx),
     new Character(200, 200, ctx),
     ctx,
     canvas.width,
@@ -22,7 +22,7 @@ function Game (floor, dragon, ctx, width, height) {
   this.width = width;
   this.height = height;
   this.broccolisEaten = 0;
-  this.floor = floor;
+  this.backgrounds = floor;
   this.dragon = dragon;
   this.context = ctx;
   this.frameNo = 0;
@@ -228,6 +228,7 @@ Game.prototype._sceneMovement = function () {
   this._emptyBroccolis();
   this._emptyTraps();
   this._emptySteaks();
+  this.backgrounds.x -= this.speed;
 };
 
 // Método para las colisiones entre el dragón y los demás elementos.
@@ -328,7 +329,9 @@ Game.prototype.updateGameArea = function () {
   this.frameNo += 1;
   this.speed += this.acceleration;
   
-  this.floor.drawBackground();
+  this.backgrounds.drawSky();
+  this.backgrounds.drawMountains();
+  this.backgrounds.drawBackground();
 
   this._sceneCreator();
   this._sceneMovement();
