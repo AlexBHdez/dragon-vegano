@@ -153,7 +153,7 @@ Game.prototype._chickensRandom = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (100 - 25 + 1) + 25);
     this.chickens.push(
-      new Chickens(1000, 450,  this.context)
+      new Chickens(20, 20, 'red', 1000, 450, this.context)
     );
   }
 };
@@ -165,7 +165,6 @@ Game.prototype._sceneCreator = function () {
   
   if (this._frameInterval(166) && this.frameNo < 500) { // Scene 01 -> 10"
     this._broccolisThreeLine(27);
-    this._chickensRandom(2);
 
   } else if (this._frameInterval(125) && this.frameNo > 500 && this.frameNo <= 1000) {   // Scene 02 -> 10"
     this._trapVertical(1);
@@ -194,7 +193,7 @@ Game.prototype._sceneCreator = function () {
   
   
   } else if (this._frameInterval(50) && this.frameNo > 3500 && this.frameNo <= 4000) { // Final Scene
-    
+  
   }
   
 };
@@ -212,10 +211,11 @@ Game.prototype._sceneMovement = function () {
     this.steaks[i].drawSteak();
   }
   for (var i = 0; i < this.chickens.length; i += 1) {
-    this.chickens[i].x -= this.speed;
+    // this.chickens[i].x -= this.speed;
     // this.chickens[i].updateFrame();
     // this.chickens[i].drawChicken();
     this.chickens[i].update();
+    this.chickens[i].moveRandom();
   }
   for (var i = 0; i < this.broccolis.length; i += 1) {
     this.broccolis[i].x -= this.speed;
