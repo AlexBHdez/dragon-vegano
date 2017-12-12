@@ -2,46 +2,39 @@ function Backgrounds(canvasHeight, ctx) {
   
   this.canvasHeight = canvasHeight;
   this.ctx = ctx;
-  this.x = 0;
   this.backgroundWidth = 5000;
+  this.backgroundHeight = 500;
 
   this.floor = new Image();
   this.floor.src = 'assets/floor.png';
-  this.floorHeight = 198;
+  this.floorX = 0;
 
   this.mountains = new Image();
   this.mountains.src = 'assets/mountains.png';
-  this.mountainsHeight = 371;
+  this.mountainsX = 0;
 
   this.sky = new Image();
   this.sky.src = 'assets/sky.png';
-  this.skyHeight = 500;
+  this.skyX = 0;
 }
 
-Backgrounds.prototype.drawBackground = function () {
-  this.ctx.drawImage(this.floor, this.x, this.canvasHeight - this.floorHeight);
-  this.ctx.drawImage(this.floor, this.x + this.backgroundWidth, this.canvasHeight - this.floorHeight);
-  this._repeatBackground();
-};
-
-Backgrounds.prototype.drawMountains = function () {
-  this.ctx.drawImage(this.mountains, this.x, this.canvasHeight - this.mountainsHeight);
-  this.ctx.drawImage(this.mountains, this.x + this.backgroundWidth, this.canvasHeight - this.mountainsHeight);
-  this._repeatBackground();
-};
-
-Backgrounds.prototype.drawSky = function () {
-  this.ctx.drawImage(this.sky, this.x, this.canvasHeight - this.skyHeight);
-  this.ctx.drawImage(this.sky, this.x + this.backgroundWidth, this.canvasHeight - this.skyHeight);
-  this._repeatBackground();
-};
-
-Backgrounds.prototype._repeatBackground = function () {
-  if (this.x <= -5000) {
-    this.x = 0;
+Backgrounds.prototype.drawFloor = function () {
+  this.ctx.drawImage(this.floor, this.floorX, this.canvasHeight - this.backgroundHeight);
+  this.ctx.drawImage(this.floor, this.floorX + this.backgroundWidth, this.canvasHeight - this.backgroundHeight);
+  if (this.floorX <= -5000) {
+    this.floorX = 0;
   }
 };
 
-Backgrounds.prototype.moveBackground = function () {
+Backgrounds.prototype.drawMountains = function () {
+  this.ctx.drawImage(this.mountains, this.mountainsX, this.canvasHeight - this.backgroundHeight);
+  this.ctx.drawImage(this.mountains, this.mountainsX + this.backgroundWidth, this.canvasHeight - this.backgroundHeight);
+  if (this.mountainsX <= -5000) {
+    this.mountainsX = 0;
+  }
+};
 
+Backgrounds.prototype.drawSky = function () {
+  this.ctx.drawImage(this.sky, this.skyX, this.canvasHeight - this.backgroundHeight);
+  this.ctx.drawImage(this.sky, this.skyX + this.backgroundWidth, this.canvasHeight - this.backgroundHeight);
 };

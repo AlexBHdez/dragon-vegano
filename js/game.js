@@ -153,7 +153,7 @@ Game.prototype._chickensRandom = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (100 - 25 + 1) + 25);
     this.chickens.push(
-      new Chickens(20, 20, 'yellow', this.width + i * positionRandom, this.positionChicken, this.context)
+      new Chickens(1000, 450,  this.context)
     );
   }
 };
@@ -165,6 +165,7 @@ Game.prototype._sceneCreator = function () {
   
   if (this._frameInterval(166) && this.frameNo < 500) { // Scene 01 -> 10"
     this._broccolisThreeLine(27);
+    this._chickensRandom(2);
 
   } else if (this._frameInterval(125) && this.frameNo > 500 && this.frameNo <= 1000) {   // Scene 02 -> 10"
     this._trapVertical(1);
@@ -212,6 +213,8 @@ Game.prototype._sceneMovement = function () {
   }
   for (var i = 0; i < this.chickens.length; i += 1) {
     this.chickens[i].x -= this.speed;
+    // this.chickens[i].updateFrame();
+    // this.chickens[i].drawChicken();
     this.chickens[i].update();
   }
   for (var i = 0; i < this.broccolis.length; i += 1) {
@@ -228,7 +231,9 @@ Game.prototype._sceneMovement = function () {
   this._emptyBroccolis();
   this._emptyTraps();
   this._emptySteaks();
-  this.backgrounds.x -= this.speed;
+  
+  this.backgrounds.floorX -= this.speed;
+  this.backgrounds.mountainsX -= 1;
 };
 
 // Método para las colisiones entre el dragón y los demás elementos.
@@ -240,11 +245,6 @@ Game.prototype._proveCrash = function () {
   }
   for (i = 0; i < this.steaks.length; i += 1) {
     if (this.dragon.crashWith(this.steaks[i])) {
-      this._stop();
-    }
-  }
-  for (i = 0; i < this.chickens.length; i += 1) {
-    if (this.dragon.crashWith(this.chickens[i])) {
       this._stop();
     }
   }
@@ -331,7 +331,7 @@ Game.prototype.updateGameArea = function () {
   
   this.backgrounds.drawSky();
   this.backgrounds.drawMountains();
-  this.backgrounds.drawBackground();
+  this.backgrounds.drawFloor();
 
   this._sceneCreator();
   this._sceneMovement();
