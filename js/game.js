@@ -5,11 +5,12 @@ canvas.width = 1000;
 canvas.height = 500;
 var ctx = canvas.getContext('2d');
 $('#canvas-wrap').prepend(canvas);
+var floorLimit = 25;
 
 var startGame = function () {
   var game = new Game(
     new Backgrounds(canvas.height, ctx),
-    new Character(200, 200, ctx),
+    new Character(200, canvas.height - floorLimit, ctx),
     ctx,
     canvas.width,
     canvas.height
@@ -24,6 +25,7 @@ function Game (floor, dragon, ctx, width, height) {
   this.broccolisEaten = 0;
   this.backgrounds = floor;
   this.dragon = dragon;
+  this.floorLimit = 25;
   this.context = ctx;
   this.frameNo = 0;
   this.speed = 2;
@@ -339,7 +341,7 @@ Game.prototype.updateGameArea = function () {
   this._shadow();
   this.dragon.newPos();
   this.dragon.drawCharacter();
-  this.dragon.limits(canvas.height - 25);
+  this.dragon.limits(canvas.height - floorLimit);
   
   this.scoreBroccoli();
   this.scoreDistance();
