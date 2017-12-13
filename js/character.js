@@ -59,30 +59,30 @@ Character.prototype.limits = function (height) {
   }
 };
 
-// Asignamos la tecla 'espacio' para cambiar la gravedad y volar!!
-Character.prototype.flyControls = function () {
-  document.onkeydown = function (e) {
-    switch (e.keyCode) {
-      case 32:
-        if(this.y > 0) {
-          this.gravity = -0.6;
-        } 
-        else {
-            this.gravity = 0.6;
-            this.y = 0;
-        }
-        break; 
-    }
-  }.bind(this);
+// // Asignamos la tecla 'espacio' para cambiar la gravedad y volar!!
+// Character.prototype.flyControls = function () {
+//   document.onkeydown = function (e) {
+//     switch (e.keyCode) {
+//       case 32:
+//         if(this.y > 0) {
+//           this.gravity = -0.6;
+//         } 
+//         else {
+//             this.gravity = 0.6;
+//             this.y = 0;
+//         }
+//         break; 
+//     }
+//   }.bind(this);
 
-  document.onkeyup = function (e) {
-    switch (e.keyCode) {
-      case 32:
-        this.gravity = 0.6;
-        break;
-    }
-  }.bind(this);
-};
+//   document.onkeyup = function (e) {
+//     switch (e.keyCode) {
+//       case 32:
+//         this.gravity = 0.6;
+//         break;
+//     }
+//   }.bind(this);
+// };
 
 // Definimos colisiones entre los componentes
 Character.prototype.crashWith = function (otherComponent) {

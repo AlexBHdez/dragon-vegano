@@ -6,16 +6,24 @@ canvas.height = 500;
 var ctx = canvas.getContext('2d');
 $('#canvas-wrap').prepend(canvas);
 var floorLimit = 25;
+var pressBarToStart = false;
 
 var startGame = function () {
   var game = new Game(
     new Backgrounds(canvas.height, ctx),
-    new Character(200, canvas.height - floorLimit, ctx),
+    new Character(200, canvas.height - 85, ctx),
     ctx,
     canvas.width,
     canvas.height
   );
-  game.start();
+  // game.start();
+  game.flyControls();
+  game.backgrounds.drawSky();
+  game.backgrounds.drawMountains();
+  game.backgrounds.drawFloor();
+  game.dragon.drawCharacter();
+  game._shadow();
+  game._pressBar();
 };
 
 // Constructor del juego
@@ -47,11 +55,41 @@ function Game (floor, dragon, ctx, width, height) {
   this.positionBroccoliIncrement = 0;
   this.positionChicken = this.height - 50;
 }
+// Asignamos la tecla 'espacio' para cambiar la gravedad y volar!!
+Game.prototype.flyControls = function () {
+  document.onkeydown = function (e) {
+    switch (e.keyCode) {
+      case 32:
+        if (pressBarToStart == false) {
+          pressBarToStart = true;
+          this.start();
+        }
+        else if (this.dragon.y > 0) {
+          this.dragon.gravity = -0.6;
+        }
+        else {
+          this.dragon.gravity = 0.6;
+          this.dragon.y = 0;
+        }
+        break;
+      case 90:
+        this._stop();
+        pressBarToStart = false;  
+    }
+  }.bind(this);
+
+  document.onkeyup = function (e) {
+    switch (e.keyCode) {
+      case 32:
+        this.dragon.gravity = 0.6;
+        break;
+    }
+  }.bind(this);
+};
 // Método para los sets iniciales del juego  
 Game.prototype.start = function () {
-  this.dragon.flyControls();
   this.updateGameArea();
-  this.dragon.updateFrame();
+  this.dragon.updateFrame();  
 };
 // Método para ir vaciando el canvas  
 Game.prototype._clear = function () {
@@ -319,6 +357,14 @@ Game.prototype._shadow = function () {
   ctx.ellipse(240, 475, 2, 25 * this.dragon.y * 0.004, 90 * Math.PI / 180, 0, 2 * Math.PI);
   ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
   ctx.fill();
+};
+
+Game.prototype._pressBar = function () {
+  ctx.font = '20px Lobster';
+  ctx.fillStyle = "rgba(0, 76, 36, 0.8";
+  ctx.fillText('press space bar to', canvas.width/2.5, canvas.height/2);
+  ctx.font = '30px Lobster';
+  ctx.fillText('eat broccolis and fly', canvas.width/2.8, canvas.height/1.8);
 };
 
 //__________________________________________________________________________________________________________________________
