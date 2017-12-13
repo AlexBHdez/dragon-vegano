@@ -8,6 +8,7 @@ $('#canvas-wrap').prepend(canvas);
 var floorLimit = 25;
 var pressBarToStart = false;
 
+
 var startGame = function () {
   var game = new Game(
     new Backgrounds(canvas.height, ctx),
@@ -16,14 +17,15 @@ var startGame = function () {
     canvas.width,
     canvas.height
   );
-  // game.start();
   game.flyControls();
   game.backgrounds.drawSky();
   game.backgrounds.drawMountains();
   game.backgrounds.drawFloor();
   game.dragon.drawCharacter();
   game._shadow();
-  game._pressBar();
+  game._pressBarScene();
+  game.music('assets/dragon-vegano.mp3');
+  game.play();
 };
 
 // Constructor del juego
@@ -74,6 +76,7 @@ Game.prototype.flyControls = function () {
         break;
       case 90:
         this._stop();
+        this.stopMusic();
         pressBarToStart = false;  
     }
   }.bind(this);
@@ -204,14 +207,27 @@ Game.prototype._chickensRandom = function (quantity) {
 Game.prototype._sceneCreator = function () {
   
   if (this._frameInterval(166) && this.frameNo < 500) { // Scene 01 -> 10"
-    this._broccolisThreeLine(27);
+    if (this.randomNumber == 0) {
+      this._broccolisThreeLine(27);
+    } else {
+      this._broccolisHorizontalLine(12);
+    }
 
   } else if (this._frameInterval(125) && this.frameNo > 500 && this.frameNo <= 1000) {   // Scene 02 -> 10"
-    this._trapVertical(1);
+    if (this.randomNumber == 0) {
+      this._trapVertical(1);
+    } else {
+      this._trapHorizontal(1);
+    }  
 
   } else if (this._frameInterval(166) && this.frameNo > 1000 && this.frameNo <= 1500) { // Scene 03 -> 10"
-    this._broccolisHorizontalLine(10);
-    this._broccolisHorizontalLine(10);  
+    if (this.randomNumber == 0) {
+      this._broccolisHorizontalLine(10);
+      this._broccolisHorizontalLine(10);  
+    } else {
+      this._broccolisThreeLine(27);
+      this._broccolisThreeLine(15);
+    }
   } else if (this._frameInterval(250) && this.frameNo > 1000 && this.frameNo <= 1500) { // Scene 03.2 -> 10"
     this._steak(1);
 
@@ -359,12 +375,36 @@ Game.prototype._shadow = function () {
   ctx.fill();
 };
 
-Game.prototype._pressBar = function () {
+Game.prototype._pressBarScene = function () {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+  ctx.rect(0, 0, canvas.width, canvas.height);
+  ctx.fill();
   ctx.font = '20px Lobster';
-  ctx.fillStyle = "rgba(0, 76, 36, 0.8";
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
   ctx.fillText('press space bar to', canvas.width/2.5, canvas.height/2);
   ctx.font = '30px Lobster';
   ctx.fillText('eat broccolis and fly', canvas.width/2.8, canvas.height/1.8);
+};
+
+Game.prototype.music = function(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.setAttribute('loop', '');
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.stop = function () {
+    this.sound.pause();
+  };
+};
+
+Game.prototype.play = function () {
+  this.sound.play();
+};
+
+Game.prototype.stopMusic = function () {
+  this.sound.pause();
 };
 
 //__________________________________________________________________________________________________________________________
@@ -375,7 +415,9 @@ Game.prototype.updateGameArea = function () {
   
   this._clear();
   this.frameNo += 1;
+  this.randomNumber = Math.floor(Math.random() * 2);
   this.speed += this.acceleration;
+  this.speedSteak += this.acceleration;
   
   this.backgrounds.drawSky();
   this.backgrounds.drawMountains();
