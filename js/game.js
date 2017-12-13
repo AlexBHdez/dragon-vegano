@@ -196,7 +196,7 @@ Game.prototype._chickensRandom = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (100 - 25 + 1) + 25);
     this.chickens.push(
-      new Chickens(20, 20, 'red', 1000, 450, this.context)
+      new Chickens(this.width + i * positionRandom, this.height - 55, this.context, 'assets/chickenBig.png')
     );
   }
 };
@@ -209,8 +209,10 @@ Game.prototype._sceneCreator = function () {
   if (this._frameInterval(166) && this.frameNo < 500) { // Scene 01 -> 10"
     if (this.randomNumber == 0) {
       this._broccolisThreeLine(27);
+      this._chickensRandom(3);
     } else {
       this._broccolisHorizontalLine(12);
+      this._chickensRandom(3);
     }
 
   } else if (this._frameInterval(125) && this.frameNo > 500 && this.frameNo <= 1000) {   // Scene 02 -> 10"
@@ -256,33 +258,34 @@ Game.prototype._sceneCreator = function () {
 // Método para mover las trampas por el canvas  
 Game.prototype._sceneMovement = function () {
   /* jshint shadow:true */
-  for (var i = 0; i < this.traps.length; i += 1) {
+  for (var i = 0, n = this.traps.length; i < n; i += 1) {
     this.traps[i].x -= this.speed;
     this.traps[i].updateFrame();
     this.traps[i].drawTrap();
   }
-  for (var i = 0; i < this.steaks.length; i += 1) {
+  for (var i = 0, n = this.steaks.length; i < n; i += 1) {
     this.steaks[i].x -= this.speedSteak;
     this.steaks[i].updateFrame();
     this.steaks[i].drawSteak();
   }
-  for (var i = 0; i < this.chickens.length; i += 1) {
-    // this.chickens[i].x -= this.speed;
+  for (var i = 0, n = this.chickens.length; i < n; i += 1) {
+    this.chickens[i].x -= this.speed;
     // this.chickens[i].updateFrame();
-    // this.chickens[i].drawChicken();
-    this.chickens[i].update();
-    this.chickens[i].moveRandom();
+    this.chickens[i].drawChicken();
+    // this.chickens[i].x -= this.speed;
+    // this.chickens[i].update();
+    // this.chickens[i].moveRandom();
   }
-  for (var i = 0; i < this.broccolis.length; i += 1) {
+  for (var i = 0, n = this.broccolis.length; i < n; i += 1) {
     this.broccolis[i].x -= this.speed;
-    this.broccolis[i].updateFrame();
+    // this.broccolis[i].updateFrame();
     this.broccolis[i].drawTrap();
   }
-  for (var i = 0; i < this.broccoliScore.length; i += 1) {
+  for (var i = 0, n = this.broccoliScore.length; i < n; i += 1) {
     this.broccoliScore[i].updateFrame();
     this.broccoliScore[i].drawTrap();
   }
-  this.broccoliScore.updateFrame();
+  
   this.broccoliScore.drawTrap();
   this._emptyBroccolis();
   this._emptyTraps();
@@ -301,6 +304,11 @@ Game.prototype._proveCrash = function () {
   }
   for (i = 0; i < this.steaks.length; i += 1) {
     if (this.dragon.crashWith(this.steaks[i])) {
+      this._stop();
+    }
+  }
+  for (i = 0; i < this.chickens.length; i += 1){
+    if (this.dragon.crashWith(this.chickens[i])) {
       this._stop();
     }
   }
@@ -414,6 +422,7 @@ Game.prototype.updateGameArea = function () {
   this._proveCrash();
   
   this._clear();
+
   this.frameNo += 1;
   this.randomNumber = Math.floor(Math.random() * 2);
   this.speed += this.acceleration;
