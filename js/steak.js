@@ -3,8 +3,8 @@ function Steaks(x, y, ctx) {
   this.y = y;
   this.ctx = ctx;
 
-  this.spriteWidth = 530;
-  this.spriteHeight = 50;
+  this.spriteWidth = 694;
+  this.spriteHeight = 60;
   this.spriteRows = 1;
   this.spriteColums = 4;
   this.spriteWalk = 1;
@@ -16,7 +16,7 @@ function Steaks(x, y, ctx) {
   this.frameCount = 4;
   this.walk = true;
   this.characterImage = new Image();
-  this.characterImage.src = 'assets/steak-530x50.png';
+  this.characterImage.src = 'assets/chicken-rocket-694x60.png';
 }
 
 Steaks.prototype.updateFrame = function () {

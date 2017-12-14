@@ -24,7 +24,7 @@ var startGame = function () {
   game.dragon.drawCharacter();
   game._shadow();
   game._pressBarScene();
-  game.music('assets/dragon-vegano.mp3');
+  game.music('assets/volar.mp3');
   game.play();
 };
 
@@ -168,7 +168,7 @@ Game.prototype._trapHorizontal = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
     this.traps.push(
-      new Traps(this.width, positionRandom, this.context, 200, 30, 'assets/trap-brocheta-200x30.png')
+      new Traps(this.width, positionRandom, this.context, 200, 30, 'assets/bacon-200x30.png')
     );
   }
 };
@@ -177,7 +177,7 @@ Game.prototype._trapVertical = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     positionRandom = Math.floor(Math.random() * (this.maxPosition - this.minPosition + 1) + this.minPosition);
     this.traps.push(
-      new Traps(this.width, positionRandom, this.context, 30, 200, 'assets/trap-brocheta-30x200.png')
+      new Traps(this.width, positionRandom, this.context, 30, 200, 'assets/bacon-30x200.png')
     );
   }
 };
