@@ -308,16 +308,19 @@ Game.prototype._proveCrash = function () {
   for (i = 0; i < this.traps.length; i += 1) {
     if (this.dragon.crashWith(this.traps[i])) {
       this._stop();
+      this.stopMusic();
     }
   }
   for (i = 0; i < this.steaks.length; i += 1) {
     if (this.dragon.crashWith(this.steaks[i])) {
       this._stop();
+      this.stopMusic();
     }
   }
   for (i = 0; i < this.chickens.length; i += 1){
     if (this.dragon.crashWith(this.chickens[i])) {
       this._stop();
+      this.stopMusic();
     }
   }
   this.broccolis.forEach(function (broccoli, index) {
@@ -407,7 +410,7 @@ Game.prototype.music = function(src) {
   this.sound.src = src;
   this.sound.setAttribute("preload", "auto");
   this.sound.setAttribute("controls", "none");
-  this.sound.setAttribute('loop', '');
+  // this.sound.setAttribute('loop', '');
   this.sound.style.display = "none";
   document.body.appendChild(this.sound);
   this.stop = function () {
