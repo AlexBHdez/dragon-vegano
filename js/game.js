@@ -19,12 +19,13 @@ var startGame = function () {
   );
   game.flyControls();
   game.backgrounds.drawSky();
+  game.backgrounds.drawClouds();
   game.backgrounds.drawMountains();
   game.backgrounds.drawFloor();
   game.dragon.drawCharacter();
   game._shadow();
   game._pressBarScene();
-  game.music('assets/volar.mp3');
+  game.music('assets/start-end-music.mp3');
   game.play();
 };
 
@@ -92,7 +93,10 @@ Game.prototype.flyControls = function () {
 // Método para los sets iniciales del juego  
 Game.prototype.start = function () {
   this.updateGameArea();
-  this.dragon.updateFrame();  
+  this.dragon.updateFrame();
+  this.stopMusic();
+  this.music('assets/volar.mp3');
+  this.play();  
 };
 // Método para ir vaciando el canvas  
 Game.prototype._clear = function () {
@@ -101,6 +105,9 @@ Game.prototype._clear = function () {
 // Método para parar el juego
 Game.prototype._stop = function () {
   window.cancelAnimationFrame(this.gameInterval);
+  this.stopMusic();
+  this.music('assets/start-end-music.mp3');
+  this.play();
 };
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
@@ -293,6 +300,7 @@ Game.prototype._sceneMovement = function () {
   
   this.backgrounds.floorX -= this.speed;
   this.backgrounds.mountainsX -= 1;
+  this.backgrounds.cloudsX -= 0.5;
 };
 
 // Método para las colisiones entre el dragón y los demás elementos.
@@ -429,6 +437,7 @@ Game.prototype.updateGameArea = function () {
   this.speedSteak += this.acceleration;
   
   this.backgrounds.drawSky();
+  this.backgrounds.drawClouds();
   this.backgrounds.drawMountains();
   this.backgrounds.drawFloor();
 

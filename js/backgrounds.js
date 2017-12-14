@@ -16,6 +16,10 @@ function Backgrounds(canvasHeight, ctx) {
   this.sky = new Image();
   this.sky.src = 'assets/sky.png';
   this.skyX = 0;
+
+  this.clouds = new Image();
+  this.clouds.src = 'assets/clouds.png';
+  this.cloudsX = 0;
 }
 
 Backgrounds.prototype.drawFloor = function () {
@@ -38,3 +42,8 @@ Backgrounds.prototype.drawSky = function () {
   this.ctx.drawImage(this.sky, this.skyX, this.canvasHeight - this.backgroundHeight);
   this.ctx.drawImage(this.sky, this.skyX + this.backgroundWidth, this.canvasHeight - this.backgroundHeight);
 };
+
+Backgrounds.prototype.drawClouds = function () {
+  this.ctx.drawImage(this.clouds, this.cloudsX, this.canvasHeight - this.backgroundHeight);
+  this.ctx.drawImage(this.clouds, this.cloudsX + this.backgroundWidth, this.canvasHeight - this.backgroundHeight);
+}
