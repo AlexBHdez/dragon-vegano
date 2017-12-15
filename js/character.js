@@ -24,19 +24,40 @@ function Character(x, y, ctx) {
   this.frameCount = 26;
   this.walk = true;
   this.characterImage = new Image();
-  this.characterImage.src = 'assets/walk_cycle_60x1860.png';
-
+  this.characterImage.src = 'assets/dragon-walk.png';
+  
 }
-
 // Dibujo el personaje
+Character.prototype.drawCharacter = function () {
+  this.ctx.drawImage(this.characterImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteFrameWidth, this.spriteFrameHeight);
+};
 Character.prototype.updateFrame = function () {
   this.currentFrame = ++this.currentFrame % this.frameCount;
   this.srcX = this.currentFrame * this.spriteFrameWidth;
   this.frameInterval = window.requestAnimationFrame(this.updateFrame.bind(this));
 };
 
-Character.prototype.drawCharacter = function () {
-  this.ctx.drawImage(this.characterImage, this.srcX, this.srcY, this.spriteFrameWidth, this.spriteFrameHeight, this.x, this.y, this.spriteFrameWidth, this.spriteFrameHeight);
+Character.prototype.drawWalk = function () {
+  this.spriteWidth = 1860;
+  this.spriteColumns = 26;
+  this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
+  this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
+  this.currentFrame = 0;
+  this.frameCount = 26;
+  this.walk = true;
+  this.characterImage.src = 'assets/dragon-walk.png';
+};
+
+Character.prototype.drawFly = function () {
+  this.spriteWidth = 1086;
+  this.spriteHeight = 50;
+  this.spriteColumns = 11;
+  this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
+  this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
+  this.currentFrame = 0;
+  this.frameCount = 11;
+  this.walk = true;
+  this.characterImage.src = 'assets/dragon-fly.png';
 };
 
 // Añadimos la gravedad a la posición del personaje
@@ -58,31 +79,6 @@ Character.prototype.limits = function (height) {
     this.y = roof;
   }
 };
-
-// // Asignamos la tecla 'espacio' para cambiar la gravedad y volar!!
-// Character.prototype.flyControls = function () {
-//   document.onkeydown = function (e) {
-//     switch (e.keyCode) {
-//       case 32:
-//         if(this.y > 0) {
-//           this.gravity = -0.6;
-//         } 
-//         else {
-//             this.gravity = 0.6;
-//             this.y = 0;
-//         }
-//         break; 
-//     }
-//   }.bind(this);
-
-//   document.onkeyup = function (e) {
-//     switch (e.keyCode) {
-//       case 32:
-//         this.gravity = 0.6;
-//         break;
-//     }
-//   }.bind(this);
-// };
 
 // Definimos colisiones entre los componentes
 Character.prototype.crashWith = function (otherComponent) {

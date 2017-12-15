@@ -447,9 +447,9 @@ Game.prototype.updateGameArea = function () {
   this._sceneCreator();
   this._sceneMovement();
   
+  this.dragon.drawCharacter();
   this._shadow();
   this.dragon.newPos();
-  this.dragon.drawCharacter();
   this.dragon.limits(canvas.height - floorLimit);
   
   this.scoreBroccoli();

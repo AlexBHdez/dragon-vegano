@@ -46,4 +46,4 @@ Backgrounds.prototype.drawSky = function () {
 Backgrounds.prototype.drawClouds = function () {
   this.ctx.drawImage(this.clouds, this.cloudsX, this.canvasHeight - this.backgroundHeight);
   this.ctx.drawImage(this.clouds, this.cloudsX + this.backgroundWidth, this.canvasHeight - this.backgroundHeight);
-}
+};
