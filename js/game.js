@@ -114,7 +114,7 @@ Game.prototype.start = function () {
   this.updateGameArea();
   this.dragon.updateFrame();
   this.stopMusic();
-  this.music('assets/volar.mp3');
+  this._selectMusic();
   this.play();  
 };
 // Método para ir vaciando el canvas  
@@ -123,10 +123,10 @@ Game.prototype._clear = function () {
 };
 // Método para parar el juego
 Game.prototype._stop = function () {
-  window.cancelAnimationFrame(this.gameInterval);
   this.stopMusic();
   this.music('assets/start-end-music.mp3');
   this.play();
+  window.cancelAnimationFrame(this.gameInterval);
 };
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
@@ -371,6 +371,8 @@ Game.prototype._proveCrash = function () {
     if (this.dragon.eatingBroccolis(broccoli)) {
       this.broccolis.splice(index, 1);
       this.broccolisEaten += 1;
+      this.music('assets/broccoli.mp3');
+      this.play();
     }
   }.bind(this));
 };
@@ -462,6 +464,18 @@ Game.prototype.music = function(src) {
   };
 };
 
+Game.prototype._selectMusic = function () {
+  if (this.randomMusic == 0) {
+    this.music('assets/54-56.mp3');
+  } else if (this.randomMusic == 1) {
+    this.music('assets/flymetothemoon.mp3');
+  } else if (this.randomMusic == 2) {
+    this.music('assets/icanfly.mp3');
+  } else if (this.randomMusic == 3) {
+    this.music('assets/volar.mp3');
+  }
+}
+
 Game.prototype.play = function () {
   this.sound.play();
 };
@@ -480,6 +494,7 @@ Game.prototype.updateGameArea = function () {
 
   this.frameNo += 1;
   this.randomNumber = Math.floor(Math.random() * 2);
+  this.randomMusic = Math.floor(Math.random() * 4);
   this.speed += this.acceleration;
   this.speedSteak += this.acceleration;
   
