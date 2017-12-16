@@ -38,11 +38,9 @@ Character.prototype.updateFrame = function () {
   this.srcX = this.currentFrame * this.spriteFrameWidth;
 
   if (this.fly == true) {
-    this.drawFly();
+    this.drawEating();
   } else if (this.walk == true) {
     this.drawWalk();
-  } else if (this.eating == true) {
-    this.drawEating();
   }
 
   this.frameInterval = window.requestAnimationFrame(this.updateFrame.bind(this));
@@ -55,15 +53,6 @@ Character.prototype.drawWalk = function () {
   this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
   this.frameCount = 26;
   this.characterImage.src = 'assets/walk.png';
-};
-
-Character.prototype.drawFly = function () {
-  this.spriteWidth = 1056;
-  this.spriteColumns = 11;
-  this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
-  this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
-  this.frameCount = 11;
-  this.characterImage.src = 'assets/fly.png';
 };
 
 Character.prototype.drawEating = function () {
@@ -97,10 +86,10 @@ Character.prototype.limits = function (height) {
 
 // Definimos colisiones entre los componentes
 Character.prototype.crashWith = function (otherComponent) {
-  var myLeft = this.x;
-  var myRight = this.x + this.spriteFrameWidth;
-  var myTop = this.y;
-  var myBottom = this.y + this.spriteFrameHeight;
+  var myLeft = this.x + 25;
+  var myRight = this.x + this.spriteFrameWidth - 25;
+  var myTop = this.y + 25;
+  var myBottom = this.y + this.spriteFrameHeight - 25;
 
   var otherLeft = otherComponent.x;
   var otherRight = otherComponent.x + (otherComponent.spriteFrameWidth);
@@ -113,4 +102,23 @@ Character.prototype.crashWith = function (otherComponent) {
     crash = false;
   }
   return crash;
+};
+
+Character.prototype.eatingBroccolis = function (broccoli) {
+  var myLeft = this.x + this.spriteFrameWidth/2;
+  var myRight = this.x + this.spriteFrameWidth - 25;
+  var myTop = this.y + 10;
+  var myBottom = this.y + this.spriteFrameHeight/3;
+
+  var broccoliLeft = broccoli.x;
+  var broccoliRight = broccoli.x + (broccoli.spriteFrameWidth);
+  var broccoliTop = broccoli.y;
+  var broccoliBottom = broccoli.y + (broccoli.spriteFrameHeight);
+
+  var eating = true;
+
+  if ( myBottom < broccoliTop || myTop > broccoliBottom || myRight < broccoliLeft || myLeft > broccoliRight ) {
+    eating = false;
+  }
+  return eating;
 };

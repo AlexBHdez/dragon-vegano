@@ -102,7 +102,8 @@ Game.prototype.dragonAnimation = function () {
     this.dragon.fly = true;
     this.dragon.walk = false;
     this.dragon.eating = false;
-  } else if (this.dragon.y > 300) {
+  } 
+  else if (this.dragon.y > 300) {
     this.dragon.fly = false;
     this.dragon.walk = true;
     this.dragon.eating = false;
@@ -367,10 +368,7 @@ Game.prototype._proveCrash = function () {
     }
   }
   this.broccolis.forEach(function (broccoli, index) {
-    if (this.dragon.crashWith(broccoli)) {
-      this.dragon.eating = true;
-      this.dragon.fly = false;
-      this.dragon.walk = false;
+    if (this.dragon.eatingBroccolis(broccoli)) {
       this.broccolis.splice(index, 1);
       this.broccolisEaten += 1;
     }
