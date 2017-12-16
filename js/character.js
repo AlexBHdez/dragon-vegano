@@ -42,7 +42,7 @@ Character.prototype.updateFrame = function () {
   } else if (this.walk == true) {
     this.drawWalk();
   } else if (this.eating == true) {
-    this.drawEating(); 
+    this.drawEating();
   }
 
   this.frameInterval = window.requestAnimationFrame(this.updateFrame.bind(this));
