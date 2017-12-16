@@ -237,8 +237,10 @@ Game.prototype._sceneCreator = function () {
   } else if (this._frameInterval(125) && this.frameNo > 500 && this.frameNo <= 1000) {   // Scene 02 -> 10"
     if (this.randomNumber == 0) {
       this._trapVertical(1);
+      this._chickensRandom(3);
     } else {
       this._trapHorizontal(1);
+      this._chickensRandom(3);
     }  
 
   } else if (this._frameInterval(166) && this.frameNo > 1000 && this.frameNo <= 1500) { // Scene 03 -> 10"
@@ -250,27 +252,54 @@ Game.prototype._sceneCreator = function () {
       this._broccolisThreeLine(15);
     }
   } else if (this._frameInterval(250) && this.frameNo > 1000 && this.frameNo <= 1500) { // Scene 03.2 -> 10"
-    this._steak(1);
+    this._steak(2);
 
   } else if (this._frameInterval(125) && this.frameNo > 1500 && this.frameNo <= 2000) { // Scene 04 -> 10"
     this._trapHorizontal(1);
+    this._chickensRandom(4);
   } else if (this._frameInterval(233) && this.frameNo > 1500 && this.frameNo <= 2000) { // Scene 04.2 -> 10"
-    this._trapVertical(1);  
+    this._trapVertical(1);
+    this._chickensRandom(4);  
 
   } else if (this._frameInterval(250) && this.frameNo > 2000 && this.frameNo <= 2500) { // Scene 05 -> 10"
-    this._broccolisDiagonalDown(12); 
+    if (this.randomNumber == 0) {
+      this._broccolisDiagonalDown(12); 
+      this._steak(3);
+    } else {
+      this._steak(3);
+      this._broccolisDiagonalUp(12);  
+    }
   } else if (this._frameInterval(275) && this.frameNo > 2000 && this.frameNo <= 2500) { // Scene 05 -> 10"
-    this._steak(3);
-    this._broccolisDiagonalUp(12);
+    if (this.randomNumber == 0) {
+      this._steak(2);
+      this._trapVertical(1);
+    } else {
+      this._steak(4);
+      this._trapHorizontal(1);
+    }
 
   } else if (this._frameInterval(250) && this.frameNo > 2500 && this.frameNo <= 3000) { // Scene 06 -> 10"
-  
-  
+    if (this.randomNumber == 0) {
+      this._broccolisThreeLine(27);
+      this._chickensRandom(3);
+    } else {
+      this._broccolisHorizontalLine(12);
+      this._chickensRandom(3);
+    }
   } else if (this._frameInterval(250) && this.frameNo > 3000 && this.frameNo <= 3500) { // Scene 07 -> 10"
+    if (this.randomNumber == 0) {
+      this._broccolisDiagonalDown(12);
+      this._steak(3);
+    } else {
+      this._broccolisDiagonalUp(12);
+      this._steak(3);
+    }
   
-  
-  } else if (this._frameInterval(50) && this.frameNo > 3500 && this.frameNo <= 4000) { // Final Scene
-  
+  } else if (this._frameInterval(50) && this.frameNo > 3500) { // Final Scene
+      this._steak(3);
+      this._chickensRandom(2);
+      this._broccolisHorizontalLine(12);
+      this._trapHorizontal(1);
   }
   
 };
@@ -289,11 +318,7 @@ Game.prototype._sceneMovement = function () {
   }
   for (var i = 0, n = this.chickens.length; i < n; i += 1) {
     this.chickens[i].x -= this.speed;
-    // this.chickens[i].updateFrame();
     this.chickens[i].drawChicken();
-    // this.chickens[i].x -= this.speed;
-    // this.chickens[i].update();
-    // this.chickens[i].moveRandom();
   }
   for (var i = 0, n = this.broccolis.length; i < n; i += 1) {
     this.broccolis[i].x -= this.speed;
@@ -364,7 +389,7 @@ Game.prototype._emptyTraps = function () {
 
 Game.prototype._emptySteaks = function () {
   this.steaks.forEach(function (item, index, array) {
-    if (item.x < 50) {
+    if (item.x < -100) {
       array.splice(item, 1);
     }
   });
