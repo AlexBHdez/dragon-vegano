@@ -90,6 +90,18 @@ Game.prototype.flyControls = function () {
     }
   }.bind(this);
 };
+
+Game.prototype.dragonAnimation = function () {
+  if (this.dragon.y < 400) {
+    this.dragon.fly = true;
+    this.dragon.walk = false;
+    this.dragon.eating = false;
+  } else if (this.dragon.y > 300) {
+    this.dragon.fly = false;
+    this.dragon.walk = true;
+    this.dragon.eating = false;
+  }  
+};
 // Método para los sets iniciales del juego  
 Game.prototype.start = function () {
   this.updateGameArea();
@@ -325,6 +337,9 @@ Game.prototype._proveCrash = function () {
   }
   this.broccolis.forEach(function (broccoli, index) {
     if (this.dragon.crashWith(broccoli)) {
+      this.dragon.eating = true;
+      this.dragon.fly = false;
+      this.dragon.walk = false;
       this.broccolis.splice(index, 1);
       this.broccolisEaten += 1;
     }
@@ -447,6 +462,7 @@ Game.prototype.updateGameArea = function () {
   this._sceneCreator();
   this._sceneMovement();
   
+  this.dragonAnimation();
   this.dragon.drawCharacter();
   this._shadow();
   this.dragon.newPos();

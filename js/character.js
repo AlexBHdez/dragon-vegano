@@ -23,8 +23,10 @@ function Character(x, y, ctx) {
   this.srcY = 0;
   this.frameCount = 26;
   this.walk = true;
+  this.fly = false;
+  this.eating = false;
   this.characterImage = new Image();
-  this.characterImage.src = 'assets/dragon-walk.png';
+  this.characterImage.src = 'assets/walk.png';
   
 }
 // Dibujo el personaje
@@ -34,6 +36,15 @@ Character.prototype.drawCharacter = function () {
 Character.prototype.updateFrame = function () {
   this.currentFrame = ++this.currentFrame % this.frameCount;
   this.srcX = this.currentFrame * this.spriteFrameWidth;
+
+  if (this.fly == true) {
+    this.drawFly();
+  } else if (this.walk == true) {
+    this.drawWalk();
+  } else if (this.eating == true) {
+    this.drawEating(); 
+  }
+
   this.frameInterval = window.requestAnimationFrame(this.updateFrame.bind(this));
 };
 
@@ -42,22 +53,26 @@ Character.prototype.drawWalk = function () {
   this.spriteColumns = 26;
   this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
   this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
-  this.currentFrame = 0;
   this.frameCount = 26;
-  this.walk = true;
-  this.characterImage.src = 'assets/dragon-walk.png';
+  this.characterImage.src = 'assets/walk.png';
 };
 
 Character.prototype.drawFly = function () {
-  this.spriteWidth = 1086;
-  this.spriteHeight = 50;
+  this.spriteWidth = 1056;
   this.spriteColumns = 11;
   this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
   this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
-  this.currentFrame = 0;
   this.frameCount = 11;
-  this.walk = true;
-  this.characterImage.src = 'assets/dragon-fly.png';
+  this.characterImage.src = 'assets/fly.png';
+};
+
+Character.prototype.drawEating = function () {
+  this.spriteWidth = 1056;
+  this.spriteColumns = 11;
+  this.spriteFrameWidth = this.spriteWidth / this.spriteColumns;
+  this.spriteFrameHeight = this.spriteHeight / this.spriteRows;
+  this.frameCount = 11;
+  this.characterImage.src = 'assets/eating.png';
 };
 
 // Añadimos la gravedad a la posición del personaje
