@@ -76,9 +76,15 @@ Game.prototype.flyControls = function () {
         }
         break;
       case 90:
-        this._stop();
-        this.stopMusic();
-        pressBarToStart = false;  
+        if (pressBarToStart == false) {
+          this.updateGameArea();
+          this.play();
+          pressBarToStart = true;
+        } else {
+          this._stop();
+          this.stopMusic();
+          pressBarToStart = false; 
+        }
     }
   }.bind(this);
 
