@@ -8,7 +8,6 @@ $('#canvas-wrap').prepend(canvas);
 var floorLimit = 25;
 var pressBarToStart = false;
 
-
 var startGame = function () {
   var game = new Game(
     new Backgrounds(canvas.height, ctx),
@@ -24,7 +23,6 @@ var startGame = function () {
   game.backgrounds.drawFloor();
   game.dragon.drawCharacter();
   game._shadow();
-  game._pressBarScene();
   game.music('assets/start-end-music.mp3');
   game.play();
 };
@@ -111,11 +109,19 @@ Game.prototype.dragonAnimation = function () {
 };
 // Método para los sets iniciales del juego  
 Game.prototype.start = function () {
+  this._startScreen();
   this.updateGameArea();
   this.dragon.updateFrame();
   this.stopMusic();
   this._selectMusic();
   this.play();  
+};
+// Método para mostrar activar y desactivar la pantalla de inicio.
+Game.prototype._startScreen = function () {
+  $('#start-screen').toggleClass('show-hide');
+};
+Game.prototype._stopScreen = function () {
+  $('#stop-screen').toggleClass('show-hide');
 };
 // Método para ir vaciando el canvas  
 Game.prototype._clear = function () {
@@ -127,6 +133,7 @@ Game.prototype._stop = function () {
   this.music('assets/start-end-music.mp3');
   this.play();
   window.cancelAnimationFrame(this.gameInterval);
+  this._stopScreen();
 };
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
@@ -329,7 +336,6 @@ Game.prototype._sceneMovement = function () {
   }
   for (var i = 0, n = this.broccolis.length; i < n; i += 1) {
     this.broccolis[i].x -= this.speed;
-    // this.broccolis[i].updateFrame();
     this.broccolis[i].drawTrap();
   }
   for (var i = 0, n = this.broccoliScore.length; i < n; i += 1) {
@@ -440,17 +446,6 @@ Game.prototype._shadow = function () {
   ctx.fill();
 };
 
-Game.prototype._pressBarScene = function () {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-  ctx.rect(0, 0, canvas.width, canvas.height);
-  ctx.fill();
-  ctx.font = '20px Lobster';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-  ctx.fillText('press space bar to', canvas.width/2.5, canvas.height/2);
-  ctx.font = '30px Lobster';
-  ctx.fillText('eat broccolis and fly', canvas.width/2.8, canvas.height/1.8);
-};
-
 Game.prototype.music = function(src) {
   this.sound = document.createElement("audio");
   this.sound.src = src;
@@ -474,7 +469,7 @@ Game.prototype._selectMusic = function () {
   } else if (this.randomMusic == 3) {
     this.music('assets/volar.mp3');
   }
-}
+};
 
 Game.prototype.play = function () {
   this.sound.play();

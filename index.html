@@ -13,11 +13,36 @@
 
   <div id="canvas-wrap">
     <!-- Aquí va el canvas -->
+    <div id="start-screen" class="overlay">
+
+      <h1 id="game-title"><span>el</span>DragónVegano</h1>
+  
+      <i class="fas fa-info-circle icon fa-2x"></i>
+
+      <div class="start-text">
+        <p class="press-space">press space bar to fly</p>
+      </div>
+
+      <div id="text-info" class="show-hide">
+        <i class="fas fa-times-circle fa-2x"></i>
+        <ul class="list">
+          <li class="list-item">Fly pressing the space bar</li>
+          <li class="list-item">Try to eat vegetables</li>
+          <li class="list-item">You're a vegan dragon, so do not eat meat</li>
+          <li class="list-item">Meat: living chickens, bacon and rocket roasted chicken</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div id="stop-screen" class="overlay show-hide">
+        <h2>Stop Screen</h2>
+    </div>
 
   </div>
 
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
   <script src="js/broccoli.js"></script>
   <script src="js/steak.js"></script>
   <script src="js/shadow.js"></script>
