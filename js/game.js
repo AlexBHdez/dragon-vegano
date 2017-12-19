@@ -133,7 +133,7 @@ Game.prototype._stop = function () {
   this.music('assets/start-end-music.mp3');
   this.play();
   window.cancelAnimationFrame(this.gameInterval);
-  this._stopScreen();
+  // this._stopScreen();
 };
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
