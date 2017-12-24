@@ -105,7 +105,7 @@ Character.prototype.crashWith = function (otherComponent) {
 };
 
 Character.prototype.eatingBroccolis = function (broccoli) {
-  var myLeft = this.x + this.spriteFrameWidth/2;
+  var myLeft = this.x;
   var myRight = this.x + this.spriteFrameWidth - 25;
   var myTop = this.y + 10;
   var myBottom = this.y + this.spriteFrameHeight/3;
