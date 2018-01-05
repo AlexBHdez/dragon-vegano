@@ -139,7 +139,6 @@ Game.prototype._stopScreen = function () {
 Game.prototype._clear = function () {
   this.context.clearRect(0, 0, this.width, this.height);
 };
-<<<<<<< HEAD
 // Método para parar el juego
 Game.prototype._stop = function () {
   this.stopMusic();
@@ -148,8 +147,6 @@ Game.prototype._stop = function () {
   window.cancelAnimationFrame(this.gameInterval);
   // this._stopScreen();
 };
-=======
->>>>>>> develop
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
   if ( (this.frameNo / n) % 1 == 0) { 
