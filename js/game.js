@@ -132,18 +132,12 @@ Game.prototype._startScreen = function () {
 };
 Game.prototype._stopScreen = function () {
   $('#stop-screen').toggleClass('show-hide');
+  $('#distance').text(this.distance);
+  $('#broccolis').text(this.broccolisEaten);
 };
 // Método para ir vaciando el canvas  
 Game.prototype._clear = function () {
   this.context.clearRect(0, 0, this.width, this.height);
-};
-// Método para parar el juego
-Game.prototype._stop = function () {
-  this.stopMusic();
-  this.music('assets/start-end-music.mp3');
-  this.play();
-  window.cancelAnimationFrame(this.gameInterval);
-  // this._stopScreen();
 };
 // Método para generar un elemento según los frames(n) indicados
 Game.prototype._frameInterval = function (n) {
