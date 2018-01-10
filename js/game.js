@@ -50,7 +50,7 @@ function Game (floor, dragon, ctx, width, height) {
   this.steaks = [];
 
   // Para la generación de broccolis y trampas
-  this.maxPosition = 50;
+  this.maxPosition = 0;
   this.minPosition = this.height - 200;
   this.positionRandom = 0;
   this.positionBroccoliIncrement = 0;
@@ -79,8 +79,7 @@ Game.prototype.flyControls = function () {
           this.play();
           pressBarToStart = true;
         } else {
-          this._stop();
-          this.stopMusic();
+          this._pauseGame();
           pressBarToStart = false; 
         }
     }
@@ -125,7 +124,6 @@ Game.prototype._stop = function () {
   this._stopScreen();
 };
 Game.prototype._pauseGame = function () {
-  this.stopMusic();
   window.cancelAnimationFrame(this.gameInterval);
 };
 // Método para mostrar activar y desactivar la pantalla de inicio.
