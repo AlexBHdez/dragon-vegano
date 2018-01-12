@@ -1,7 +1,8 @@
 body {
-  background-color: rgba(128, 128, 128, 0.356);
   display: flex;
   justify-content: center;
+  background-image: linear-gradient(45deg, rgba(194, 233, 221, 0.5) 1%, rgba(104, 119, 132, 0.5) 100%),
+  linear-gradient(-45deg, #494d71 0%, rgba(217, 230, 185, 0.5) 80%);
 }
 
 #canvas-wrap {
@@ -11,7 +12,7 @@ body {
 #canvas-wrap canvas, .overlay {
   position: absolute;
   left: -500px;
-  top: 0px;
+  top: 100px;
 }
 
 #canvas-wrap .overlay {
