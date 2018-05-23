@@ -37,11 +37,13 @@ Character.prototype.updateFrame = function () {
   this.currentFrame = ++this.currentFrame % this.frameCount;
   this.srcX = this.currentFrame * this.spriteFrameWidth;
 
-  if (this.fly == true) {
-    this.drawEating();
-  } else if (this.walk == true) {
-    this.drawWalk();
-  }
+  // Como falla la animación del vuelo, de momento, comento esto y dejo sólo que ande.
+  // if (this.fly == true) {
+  //   this.drawEating();
+  // } else if (this.walk == true) {
+  //   this.drawWalk();
+  // }
+  this.drawWalk();
 
   this.frameInterval = window.requestAnimationFrame(this.updateFrame.bind(this));
 };
